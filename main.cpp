@@ -14,5 +14,9 @@ int main() {
     GRID A(H, L, nH, nL, K, t);
     Utility::testGrid(A);
 
+    GRID::createUniversalElement();
+
+    GRID::createJacobian(A,nL, nH);
+
     return 0;
 }

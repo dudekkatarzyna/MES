@@ -78,7 +78,7 @@ void Utility::printData(int *H, int *L, int *nH, int *nL, int *K, int *t) {
     cout << "| t = " << *t << endl;
 }
 
-void Utility::printUniversalElement(float (*divKsi)[4], float (*divEta)[4]) {
+void Utility::printUniversalElement(UniversalElement ue) {
 
 
     cout << "| ------------------------------------------------------------" << endl;
@@ -89,7 +89,7 @@ void Utility::printUniversalElement(float (*divKsi)[4], float (*divEta)[4]) {
     for (int i = 0; i < 4; i++) {
         cout << "divKsi punkt nr " << i << endl;
         for (int j = 0; j < 4; j++) {
-            cout << divKsi[i][j] << " ";
+            cout << ue.divKsi[i][j] << " ";
         }
         cout << endl;
     }
@@ -98,7 +98,7 @@ void Utility::printUniversalElement(float (*divKsi)[4], float (*divEta)[4]) {
     for (int i = 0; i < 4; i++) {
         cout << "divEta punkt nr " << i << endl;
         for (int j = 0; j < 4; j++) {
-            cout << divEta[i][j] << " ";
+            cout << ue.divEta[i][j] << " ";
         }
         cout << endl;
     }

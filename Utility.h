@@ -6,6 +6,7 @@
 #define MES_UTILITY_H
 
 #include "GRID.h"
+#include "UniversalElement.h"
 #include<fstream>
 
 class Utility {
@@ -21,7 +22,7 @@ public:
 
     static void printData(int *H, int *L, int *nH, int *nL, int *K, int *t);
 
-    static void printUniversalElement(float divKsi[4][4], float divEta[4][4]);
+    static void printUniversalElement(UniversalElement ue);
 
     static void printCreateJacobian(float Jacobian[4][2][2]);
     static void printRevertJacobian(float Jacobian[4][2][2]);

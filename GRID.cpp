@@ -4,6 +4,7 @@
 
 #include "GRID.h"
 #include "Utility.h"
+#include "UniversalElement.h"
 #include<iostream>
 #include <cmath>
 
@@ -43,79 +44,41 @@ GRID::GRID(int H, int L, int nH, int nL, int K, int t) {
     Utility::printGrid(*this, nH, nL);
 }
 
+float Jacobian[4][2][2];
+float detJ[4];
+UniversalElement ue;
 
 void GRID::createH(GRID A, int elId) {
 
-    GRID::createUniversalElement();
+    Utility::printUniversalElement(ue);
     GRID::createJacobian(A, elId);
 
 }
 
-class KsiEta {
-public:
-    float ksi;
-    float eta;
-};
-
-float divEta[4][4]; // dN/dEta
-float divKsi[4][4]; // dN/dKsi
-
-float Jacobian[4][2][2];
-float detJ[4];
-
-void GRID::createUniversalElement() {
-
-    KsiEta elArr[4];
-    elArr[0].ksi = static_cast<float>(-1 / sqrt(3));
-    elArr[0].eta = static_cast<float>(-1 / sqrt(3));
-    elArr[1].ksi = static_cast<float>(1 / sqrt(3));
-    elArr[1].eta = static_cast<float>(-1 / sqrt(3));
-    elArr[2].ksi = static_cast<float>(1 / sqrt(3));
-    elArr[2].eta = static_cast<float>(1 / sqrt(3));
-    elArr[3].ksi = static_cast<float>(-1 / sqrt(3));
-    elArr[3].eta = static_cast<float>(1 / sqrt(3));
-
-    for (int el = 0; el < 4; el++) {
-        divEta[el][0] = static_cast<float>(-(1.0 / 4.0) * (1 - elArr[el].ksi));
-        divEta[el][1] = static_cast<float>(-(1.0 / 4.0) * (1 + elArr[el].ksi));
-        divEta[el][2] = static_cast<float>((1.0 / 4.0) * (1 + elArr[el].ksi));
-        divEta[el][3] = static_cast<float>((1.0 / 4.0) * (1 - elArr[el].ksi));
-    }
-
-    for (int el = 0; el < 4; el++) {
-        divKsi[el][0] = static_cast<float>(-(1.0 / 4.0) * (1 - elArr[el].eta));
-        divKsi[el][1] = static_cast<float>((1.0 / 4.0) * (1 - elArr[el].eta));
-        divKsi[el][2] = static_cast<float>((1.0 / 4.0) * (1 + elArr[el].eta));
-        divKsi[el][3] = static_cast<float>(-(1.0 / 4.0) * (1 + elArr[el].eta));
-    }
-
-    Utility::printUniversalElement(divKsi, divEta);
-}
-
 void GRID::createJacobian(GRID A, int elId) {
+
 
     for (int nodeId = 0; nodeId < 4; nodeId++) {
         Jacobian[nodeId][0][0] =
-                divKsi[nodeId][0] * A.node[A.element[elId].id[0]].x +
-                divKsi[nodeId][1] * A.node[A.element[elId].id[1]].x +
-                divKsi[nodeId][2] * A.node[A.element[elId].id[2]].x +
-                divKsi[nodeId][3] * A.node[A.element[elId].id[3]].x;
+                ue.divKsi[nodeId][0] * A.node[A.element[elId].id[0]].x +
+                ue.divKsi[nodeId][1] * A.node[A.element[elId].id[1]].x +
+                ue.divKsi[nodeId][2] * A.node[A.element[elId].id[2]].x +
+                ue.divKsi[nodeId][3] * A.node[A.element[elId].id[3]].x;
         Jacobian[nodeId][0][1] =
-                divKsi[nodeId][0] * A.node[A.element[elId].id[0]].y +
-                divKsi[nodeId][1] * A.node[A.element[elId].id[1]].y +
-                divKsi[nodeId][2] * A.node[A.element[elId].id[2]].y +
-                divKsi[nodeId][3] * A.node[A.element[elId].id[3]].y;
+                ue.divKsi[nodeId][0] * A.node[A.element[elId].id[0]].y +
+                ue.divKsi[nodeId][1] * A.node[A.element[elId].id[1]].y +
+                ue.divKsi[nodeId][2] * A.node[A.element[elId].id[2]].y +
+                ue.divKsi[nodeId][3] * A.node[A.element[elId].id[3]].y;
         Jacobian[nodeId][1][0] =
-                divEta[nodeId][0] * A.node[A.element[elId].id[0]].x +
-                divEta[nodeId][1] * A.node[A.element[elId].id[1]].x +
-                divEta[nodeId][2] * A.node[A.element[elId].id[2]].x +
-                divEta[nodeId][3] * A.node[A.element[elId].id[3]].x;
+                ue.divEta[nodeId][0] * A.node[A.element[elId].id[0]].x +
+                ue.divEta[nodeId][1] * A.node[A.element[elId].id[1]].x +
+                ue.divEta[nodeId][2] * A.node[A.element[elId].id[2]].x +
+                ue.divEta[nodeId][3] * A.node[A.element[elId].id[3]].x;
         Jacobian[nodeId][1][1] =
-                divEta[nodeId][0] * A.node[A.element[elId].id[0]].y +
-                divEta[nodeId][1] * A.node[A.element[elId].id[1]].y +
-                divEta[nodeId][2] * A.node[A.element[elId].id[2]].y +
-                divEta[nodeId][3] * A.node[A.element[elId].id[3]].y;
-
+                ue.divEta[nodeId][0] * A.node[A.element[elId].id[0]].y +
+                ue.divEta[nodeId][1] * A.node[A.element[elId].id[1]].y +
+                ue.divEta[nodeId][2] * A.node[A.element[elId].id[2]].y +
+                ue.divEta[nodeId][3] * A.node[A.element[elId].id[3]].y;
     }
 
     Utility::printCreateJacobian(Jacobian);
@@ -171,22 +134,22 @@ void GRID::dNdXY(GRID A) {
     for (int nodeId = 0; nodeId < 4; nodeId++) {
 
         divNx[nodeId][0] =
-                Jacobian[nodeId][0][0] * divKsi[nodeId][0] + Jacobian[nodeId][0][1] * divEta[nodeId][0];
+                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][0] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][0];
         divNx[nodeId][1] =
-                Jacobian[nodeId][0][0] * divKsi[nodeId][1] + Jacobian[nodeId][0][1] * divEta[nodeId][1];
+                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][1] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][1];
         divNx[nodeId][2] =
-                Jacobian[nodeId][0][0] * divKsi[nodeId][2] + Jacobian[nodeId][0][1] * divEta[nodeId][2];
+                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][2] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][2];
         divNx[nodeId][3] =
-                Jacobian[nodeId][0][0] * divKsi[nodeId][3] + Jacobian[nodeId][0][1] * divEta[nodeId][3];
+                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][3] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][3];
 
         divNy[nodeId][0] =
-                Jacobian[nodeId][1][0] * divKsi[nodeId][0] + Jacobian[nodeId][1][1] * divEta[nodeId][0];
+                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][0] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][0];
         divNy[nodeId][1] =
-                Jacobian[nodeId][1][0] * divKsi[nodeId][1] + Jacobian[nodeId][1][1] * divEta[nodeId][1];
+                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][1] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][1];
         divNy[nodeId][2] =
-                Jacobian[nodeId][1][0] * divKsi[nodeId][2] + Jacobian[nodeId][1][1] * divEta[nodeId][2];
+                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][2] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][2];
         divNy[nodeId][3] =
-                Jacobian[nodeId][1][0] * divKsi[nodeId][3] + Jacobian[nodeId][1][1] * divEta[nodeId][3];
+                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][3] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][3];
 
     }
 

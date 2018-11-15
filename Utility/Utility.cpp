@@ -49,7 +49,7 @@ void Utility::printELEMENT(GRID &grid, int nH, int nL) {
 
 }
 
-void Utility::readFile(int *H, int *L, int *nH, int *nL, int *K, int *t) {
+void Utility::readFile(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro) {
     ifstream read;
     read.open("../data.txt");
     if (read.is_open()) {
@@ -59,14 +59,16 @@ void Utility::readFile(int *H, int *L, int *nH, int *nL, int *K, int *t) {
         read >> *nL;
         read >> *K;
         read >> *t;
-
+        read >> *alfa;
+        read >> *c;
+        read >> *ro;
     }
     read.close();
 
-    Utility::printData(H, L, nH, nL, K, t);
+    Utility::printData(H, L, nH, nL, K, t, alfa, c, ro);
 }
 
-void Utility::printData(int *H, int *L, int *nH, int *nL, int *K, int *t) {
+void Utility::printData(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| PRINT DATA" << endl;
     cout << "| ------------------------------------------------------------" << endl;
@@ -76,6 +78,11 @@ void Utility::printData(int *H, int *L, int *nH, int *nL, int *K, int *t) {
     cout << "| nL = " << *nL << endl;
     cout << "| K = " << *K << endl;
     cout << "| t = " << *t << endl;
+    cout << "| alfa = " << *alfa << endl;
+    cout << "| c = " << *c << endl;
+    cout << "| ro = " << *ro << endl;
+
+
 }
 
 void Utility::printUniversalElement(UniversalElement ue) {
@@ -270,4 +277,87 @@ void Utility::printH(float (*H)[4]) {
         cout << endl;
     }
 
+}
+
+void Utility::printNxN(float **Arr) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| NxN in bordConditon" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    Utility::printMatrix4x4(Arr);
+
+}
+
+void Utility::printSumPC(float **sum) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| PC1 + PC2" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    Utility::printMatrix4x4(sum);
+}
+
+void Utility::printFinalH(float **H) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Final version of H, with board condition" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    Utility::printMatrix4x4(H);
+}
+
+void Utility::printMatrix4x4(float **Arr) {
+
+    cout << Arr[0][0] << " " << Arr[0][1] << " " << Arr[0][2] << " " << Arr[0][3] << endl;
+    cout << Arr[1][0] << " " << Arr[1][1] << " " << Arr[1][2] << " " << Arr[1][3] << endl;
+    cout << Arr[2][0] << " " << Arr[2][1] << " " << Arr[2][2] << " " << Arr[2][3] << endl;
+    cout << Arr[3][0] << " " << Arr[3][1] << " " << Arr[3][2] << " " << Arr[3][3] << endl;
+}
+
+void Utility::printNxNinC(float **MatrixCNSqrt) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| NxN matrix in C" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    Utility::printMatrix4x4(MatrixCNSqrt);
+
+}
+
+void Utility::printMatrixC(float **MatrixC) {
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Matrix C" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    Utility::printMatrix4x4(MatrixC);
+}
+
+void Utility::printGlobalH(float **globalH, int nH, int nL) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Glabal matrix H" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    for (int i = 0; i < nH * nL; i++) {
+        for (int j = 0; j < nH * nL; ++j) {
+            cout << globalH[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+void Utility::printGlobalC(float **globalC, int nH, int nL) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Glabal matrix H" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    for (int i = 0; i < nH * nL; i++) {
+        for (int j = 0; j < nH * nL; ++j) {
+            cout << globalC[i][j] << " ";
+        }
+        cout << endl;
+    }
 }

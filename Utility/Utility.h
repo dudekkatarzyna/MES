@@ -5,8 +5,8 @@
 #ifndef MES_UTILITY_H
 #define MES_UTILITY_H
 
-#include "GRID.h"
-#include "UniversalElement.h"
+#include "../Grid/GRID.h"
+#include "../UniversalElements/UniversalElement.h"
 #include<fstream>
 
 class Utility {
@@ -18,9 +18,9 @@ public:
 
     static void printGrid(GRID &pGRID, int, int);
 
-    static void readFile(int *H, int *L, int *nH, int *nL, int *K, int *t);
+    static void readFile(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro);
 
-    static void printData(int *H, int *L, int *nH, int *nL, int *K, int *t);
+    static void printData(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro);
 
     static void printUniversalElement(UniversalElement ue);
 
@@ -42,6 +42,22 @@ public:
     static void printMultiplyK(float arrK[4][4][4]);
 
     static void printH(float H[4][4]);
+
+    static void printNxN(float **Arr);
+
+    static void printSumPC(float **sum);
+
+    static void printFinalH(float **H);
+
+    static void printMatrix4x4(float **Arr);
+
+    static void printNxNinC(float **MatrixCNSqrt);
+
+    static void printMatrixC(float **MatrixC);
+
+    static void printGlobalH(float **globalH, int nH, int nL);
+
+    static void printGlobalC(float **globalC,  int nH, int nL);
 };
 
 

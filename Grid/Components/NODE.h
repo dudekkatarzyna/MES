@@ -8,8 +8,8 @@
 
 class NODE {
 public:
-    int x;
-    int y;
+    float x;
+    float y;
     int t;
 
 };

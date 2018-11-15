@@ -11,6 +11,7 @@ class ELEMENT {
     public:
         int id[4];
         int k;
+        bool Q[4];
 
 };
 

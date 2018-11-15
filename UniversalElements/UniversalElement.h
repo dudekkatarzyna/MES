@@ -12,12 +12,6 @@ public:
 
 private:
 
-    class KsiEta {
-    public:
-        float ksi;
-        float eta;
-    };
-
 public:
     float divEta[4][4]; // dN/dEta
     float divKsi[4][4]; // dN/dKsi

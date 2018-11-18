@@ -264,7 +264,7 @@ void Utility::printMultiplyK(float (*arrK)[4][4]) {
 
 }
 
-void Utility::printH(float (*H)[4]) {
+void Utility::printH(float **H) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| CALCULATE H" << endl;
@@ -282,7 +282,7 @@ void Utility::printH(float (*H)[4]) {
 void Utility::printNxN(float **Arr) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| NxN in bordConditon" << endl;
+    cout << "| NxN in bordConditon * alfa" << endl;
     cout << "| ------------------------------------------------------------" << endl;
 
     Utility::printMatrix4x4(Arr);
@@ -292,7 +292,7 @@ void Utility::printNxN(float **Arr) {
 void Utility::printSumPC(float **sum) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| PC1 + PC2" << endl;
+    cout << "| (PC1 + PC2) *  detJ" << endl;
     cout << "| ------------------------------------------------------------" << endl;
 
     Utility::printMatrix4x4(sum);
@@ -301,7 +301,7 @@ void Utility::printSumPC(float **sum) {
 void Utility::printFinalH(float **H) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| Final version of H, with board condition" << endl;
+    cout << "| Version of H, with board condition" << endl;
     cout << "| ------------------------------------------------------------" << endl;
 
     Utility::printMatrix4x4(H);
@@ -351,7 +351,7 @@ void Utility::printGlobalH(float **globalH, int nH, int nL) {
 void Utility::printGlobalC(float **globalC, int nH, int nL) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| Glabal matrix H" << endl;
+    cout << "| Glabal matrix C" << endl;
     cout << "| ------------------------------------------------------------" << endl;
 
     for (int i = 0; i < nH * nL; i++) {
@@ -360,4 +360,14 @@ void Utility::printGlobalC(float **globalC, int nH, int nL) {
         }
         cout << endl;
     }
+}
+
+void Utility::printSumBC(float **Arr) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Summed up all board conditions" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    Utility::printMatrix4x4(Arr);
+
 }

@@ -41,7 +41,7 @@ public:
 
     static void printMultiplyK(float arrK[4][4][4]);
 
-    static void printH(float H[4][4]);
+    static void printH(float **H);
 
     static void printNxN(float **Arr);
 
@@ -58,6 +58,8 @@ public:
     static void printGlobalH(float **globalH, int nH, int nL);
 
     static void printGlobalC(float **globalC,  int nH, int nL);
+
+    static void printSumBC(float **Arr);
 };
 
 

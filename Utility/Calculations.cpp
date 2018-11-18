@@ -212,46 +212,54 @@ float **Calculations::addBordCondition(GRID A, int el, int alfa) {
     UniversalElementSides a;
 
     if (A.element[el].Q[0]) {
+        cout<<"Element:"<<el<<" Powierzchnia 1"<<endl;
         a.N(PC1, PC2, 0);
 
         sideLenght = static_cast<float>(sqrt(
-                pow((A.node[A.element[el].id[1]].x - A.node[A.element[el].id[0]].x), 2) +
-                pow((A.node[A.element[el].id[1]].y - A.node[A.element[el].id[0]].y), 2)));
+                pow(A.node[A.element[el].id[1]].x,2) - pow(A.node[A.element[el].id[0]].x, 2) +
+                pow(A.node[A.element[el].id[1]].y,2) - pow(A.node[A.element[el].id[0]].y, 2)));
+
+        cout<<"sideLength"<<sideLenght<<endl;
 
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
     if (A.element[el].Q[1]) {
+        cout<<"Element:"<<el<<" Powierzchnia 2"<<endl;
         a.N(PC1, PC2, 1);
 
         sideLenght = static_cast<float>(sqrt(
                 pow((A.node[A.element[el].id[2]].x - A.node[A.element[el].id[1]].x), 2) +
                 pow((A.node[A.element[el].id[2]].y - A.node[A.element[el].id[1]].y), 2)));
-
+        cout<<"sideLength"<<sideLenght<<endl;
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
     if (A.element[el].Q[2]) {
+        cout<<"Element:"<<el<<" Powierzchnia 3"<<endl;
         a.N(PC1, PC2, 2);
 
         sideLenght = static_cast<float>(sqrt(
                 pow((A.node[A.element[el].id[3]].x - A.node[A.element[el].id[2]].x), 2) +
                 pow((A.node[A.element[el].id[3]].y - A.node[A.element[el].id[2]].y), 2)));
+        cout<<"sideLength"<<sideLenght<<endl;
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
     if (A.element[el].Q[3]) {
+        cout<<"Element:"<<el<<" Powierzchnia 4"<<endl;
         a.N(PC1, PC2, 3);
 
         sideLenght = static_cast<float>(sqrt(
                 pow((A.node[A.element[el].id[0]].x - A.node[A.element[el].id[3]].x), 2) +
                 pow((A.node[A.element[el].id[0]].y - A.node[A.element[el].id[3]].y), 2)));
+        cout<<"sideLength"<<sideLenght<<endl;
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
 
 
-    Utility::printSumPC(sumArr);
+    Utility::printSumBC(sumArr);
     return sumArr;
 }
 
@@ -280,6 +288,7 @@ float **Calculations::sumArraysDet(float **Arr1, float **Arr2) {
     for (int i = 0; i < 4; i++) {
         sum[i] = new float[4];
         for (int j = 0; j < 4; j++) {
+            //cout<<Arr1[i][j]<<" "<<Arr2[i][j]<<" "<<sideLenght / 2<<endl;
             sum[i][j] = (Arr1[i][j] + Arr2[i][j]) * (sideLenght / 2);
         }
     }
@@ -323,7 +332,7 @@ float** Calculations::matrixC(int c, int ro) {
                     c * ro * detJ[i];
         }
     }
-    Utility::printMatrixC(MatrixC);
+    return MatrixC;
 }
 
 
@@ -350,7 +359,7 @@ void Calculations::createNKsiEta() {
         MatrixCN[i][3] = static_cast<float>(0.25 * (1 - elArr[i].ksi) * (1 + elArr[i].eta));
     }
 
-    Utility::printMatrix4x4(MatrixCN);
+    //Utility::printMatrix4x4(MatrixCN);
 }
 
 
@@ -366,7 +375,7 @@ void Calculations::createMatrixCNSqrt() {
                 MatrixCNSqrt[pc][i][j] = MatrixCN[pc][i] * MatrixCN[pc][j];
             }
         }
-        Utility::printNxNinC(MatrixCNSqrt[pc]);
+        //Utility::printNxNinC(MatrixCNSqrt[pc]);
     }
 
 }

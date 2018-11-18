@@ -52,18 +52,16 @@ void GRID::setBC(GRID A) {
     A.element[0].Q[0]=true;
     A.element[0].Q[3]=true;
     A.element[1].Q[3]=true;
+    A.element[2].Q[2]=true;
     A.element[2].Q[3]=true;
-    A.element[3].Q[3]=true;
-    A.element[4].Q[2]=true;
-    A.element[4].Q[3]=true;
-    A.element[5].Q[0]=true;
-    A.element[9].Q[2]=true;
-    A.element[10].Q[0]=true;
-    A.element[10].Q[1]=true;
-    A.element[11].Q[1]=true;
-    A.element[12].Q[1]=true;
-    A.element[13].Q[1]=true;
-    A.element[14].Q[1]=true;
-    A.element[14].Q[2]=true;
+
+
+    A.element[3].Q[0]=true;
+    A.element[5].Q[3]=true;
+    A.element[6].Q[0]=true;
+    A.element[6].Q[1]=true;
+    A.element[7].Q[1]=true;
+    A.element[8].Q[1]=true;
+    A.element[8].Q[2]=true;
 
 }

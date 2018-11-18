@@ -26,15 +26,17 @@ int main() {
 
         cout << endl << endl << "ELEMENT " << el << endl;
         matrixH = Calculations::createH(A, el);
-        bordCond = Calculations::addBordCondition(A, el, alfa);
 
+        cout << endl << "MATRIX H WITHOUT BOARD CONDITIONS" << endl;
+        Utility::printH(matrixH);
+        bordCond = Calculations::addBordCondition(A, el, alfa);
         Calculations::sumArrays(matrixH, bordCond);
 
         Utility::printFinalH(matrixH);
 
         matrixC = Calculations::matrixC(c, ro);
 
-       // Utility::printMatrixC(matrixC); //TODO fucked up
+        Utility::printMatrixC(matrixC);
 
         //float **vectorP=Calculations::vectorP(A, el, alfa);
     }
@@ -53,7 +55,7 @@ int main() {
 
             for (int j = 0; j < 4; j++) {
                 globalH[A.element[el].id[i]][A.element[el].id[j]] += matrixH[i][j];
-             //   globalC[A.element[el].id[i]][A.element[el].id[j]] += matrixC[i][j];
+                globalC[A.element[el].id[i]][A.element[el].id[j]] += matrixC[i][j];
             }
         }
     }

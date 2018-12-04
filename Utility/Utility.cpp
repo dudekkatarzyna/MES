@@ -49,37 +49,43 @@ void Utility::printELEMENT(GRID &grid, int nH, int nL) {
 
 }
 
-void Utility::readFile(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro) {
+void Utility::readFile(int*t0, int*tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa, int *c, int *ro) {
     ifstream read;
     read.open("../data.txt");
     if (read.is_open()) {
+        read >> *t0;
+        read >> *tau;
+        read >> *stepTau;
+        read >> *tA;
+        read >> *alfa;
         read >> *H;
         read >> *L;
         read >> *nH;
         read >> *nL;
-        read >> *K;
-        read >> *t;
-        read >> *alfa;
         read >> *c;
+        read >> *K;
         read >> *ro;
     }
     read.close();
 
-    Utility::printData(H, L, nH, nL, K, t, alfa, c, ro);
+    Utility::printData(t0, tau, stepTau, tA, H, L, nH, nL, K, alfa, c, ro);
 }
 
-void Utility::printData(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro) {
+void Utility::printData(int*t0, int*tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa, int *c, int *ro) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| PRINT DATA" << endl;
     cout << "| ------------------------------------------------------------" << endl;
+    cout << "| t0 = " << *t0 <<" //initial temperature" <<endl;
+    cout << "| tau = " << *tau <<" // simulation time"<< endl;
+    cout << "| stepTau = " << *stepTau <<" //simulation step time"<< endl;
+    cout << "| tA = " << *tA << " //ambient temperature"<<endl;
+    cout << "| alfa = " << *alfa << " //alfa"<<endl;
     cout << "| H = " << *H << endl;
     cout << "| L = " << *L << endl;
     cout << "| nH = " << *nH << endl;
     cout << "| nL = " << *nL << endl;
-    cout << "| K = " << *K << endl;
-    cout << "| t = " << *t << endl;
-    cout << "| alfa = " << *alfa << endl;
     cout << "| c = " << *c << endl;
+    cout << "| K = " << *K << endl;
     cout << "| ro = " << *ro << endl;
 
 
@@ -369,5 +375,45 @@ void Utility::printSumBC(float **Arr) {
     cout << "| ------------------------------------------------------------" << endl;
 
     Utility::printMatrix4x4(Arr);
+
+}
+
+void Utility::printP(float **vectorP) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Vector P" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    cout << vectorP[0][0] << endl << vectorP[1][0] << endl << vectorP[2][0] << endl << vectorP[3][0] << endl << endl;
+
+}
+
+void Utility::printGlobalP(float **globalP, int nH, int nL) {
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Glabal vector P" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    for (int i = 0; i < nH * nL; i++) {
+            cout << globalP[i][0] <<endl;
+    }
+}
+
+void Utility::printTemperature(float **t1Vector, int nH, int nL) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Calculated t1" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    for (int i = 0; i < nH * nL; i++) {
+        cout << t1Vector[i][0] <<endl;
+    }
+
+}
+
+void Utility::printMinMaxTemp(float min, float max) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Min temp: "<<min<<" Max temp: "<<max << endl;
+    cout << "| ------------------------------------------------------------" << endl;
 
 }

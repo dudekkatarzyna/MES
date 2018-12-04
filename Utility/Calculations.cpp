@@ -211,55 +211,46 @@ float **Calculations::addBordCondition(GRID A, int el, int alfa) {
     }
     UniversalElementSides a;
 
+    sideLenght = static_cast<float>(sqrt(
+            pow((A.node[A.element[el].id[2]].x - A.node[A.element[el].id[1]].x), 2) +
+            pow((A.node[A.element[el].id[2]].y - A.node[A.element[el].id[1]].y), 2)));
+
     if (A.element[el].Q[0]) {
-        cout<<"Element:"<<el<<" Powierzchnia 1"<<endl;
+   //     cout << "Element:" << el << " Powierzchnia 1" << endl;
         a.N(PC1, PC2, 0);
 
-        sideLenght = static_cast<float>(sqrt(
-                pow(A.node[A.element[el].id[1]].x,2) - pow(A.node[A.element[el].id[0]].x, 2) +
-                pow(A.node[A.element[el].id[1]].y,2) - pow(A.node[A.element[el].id[0]].y, 2)));
-
-        cout<<"sideLength"<<sideLenght<<endl;
+    //    cout << "sideLength" << sideLenght << endl;
 
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
     if (A.element[el].Q[1]) {
-        cout<<"Element:"<<el<<" Powierzchnia 2"<<endl;
+     //   cout << "Element:" << el << " Powierzchnia 2" << endl;
         a.N(PC1, PC2, 1);
 
-        sideLenght = static_cast<float>(sqrt(
-                pow((A.node[A.element[el].id[2]].x - A.node[A.element[el].id[1]].x), 2) +
-                pow((A.node[A.element[el].id[2]].y - A.node[A.element[el].id[1]].y), 2)));
-        cout<<"sideLength"<<sideLenght<<endl;
+
+    //    cout << "sideLength" << sideLenght << endl;
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
     if (A.element[el].Q[2]) {
-        cout<<"Element:"<<el<<" Powierzchnia 3"<<endl;
+    //    cout << "Element:" << el << " Powierzchnia 3" << endl;
         a.N(PC1, PC2, 2);
-
-        sideLenght = static_cast<float>(sqrt(
-                pow((A.node[A.element[el].id[3]].x - A.node[A.element[el].id[2]].x), 2) +
-                pow((A.node[A.element[el].id[3]].y - A.node[A.element[el].id[2]].y), 2)));
-        cout<<"sideLength"<<sideLenght<<endl;
+   //     cout << "sideLength" << sideLenght << endl;
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
     if (A.element[el].Q[3]) {
-        cout<<"Element:"<<el<<" Powierzchnia 4"<<endl;
+   //     cout << "Element:" << el << " Powierzchnia 4" << endl;
         a.N(PC1, PC2, 3);
 
-        sideLenght = static_cast<float>(sqrt(
-                pow((A.node[A.element[el].id[0]].x - A.node[A.element[el].id[3]].x), 2) +
-                pow((A.node[A.element[el].id[0]].y - A.node[A.element[el].id[3]].y), 2)));
-        cout<<"sideLength"<<sideLenght<<endl;
+   //     cout << "sideLength" << sideLenght << endl;
         makeArrayFromVector(PC1, PC2, alfa, sideLenght);
         sumArrays(sumArr, sumArraysDet(PC1Sqr, PC2Sqr));
     }
 
 
-    Utility::printSumBC(sumArr);
+   // Utility::printSumBC(sumArr);
     return sumArr;
 }
 
@@ -277,8 +268,8 @@ void Calculations::makeArrayFromVector(float PC1[4], float PC2[4], int alfa, flo
     }
 
 
-    Utility::printNxN(PC1Sqr);
-    Utility::printNxN(PC2Sqr);
+  //  Utility::printNxN(PC1Sqr);
+  //  Utility::printNxN(PC2Sqr);
 }
 
 float **Calculations::sumArraysDet(float **Arr1, float **Arr2) {
@@ -293,7 +284,7 @@ float **Calculations::sumArraysDet(float **Arr1, float **Arr2) {
         }
     }
 
-    Utility::printSumPC(sum);
+//    Utility::printSumPC(sum);
     return sum;
 }
 
@@ -310,15 +301,12 @@ void Calculations::sumArrays(float **Arr1, float **Arr2) {
 
 }
 
-float ** Calculations::vectorP(GRID A, int el, int alfa) {
-
-}
 
 float **MatrixCN;
 float ***MatrixCNSqrt;
 float **MatrixC;
 
-float** Calculations::matrixC(int c, int ro) {
+float **Calculations::matrixC(int c, int ro) {
 
     Calculations::createNKsiEta();
     Calculations::createMatrixCNSqrt();
@@ -377,5 +365,116 @@ void Calculations::createMatrixCNSqrt() {
         }
         //Utility::printNxNinC(MatrixCNSqrt[pc]);
     }
+
+}
+
+float **vectorP;
+
+float **Calculations::vectorP(GRID A, int el, int alfa, int tA) {
+
+
+    float **vectorP = new float *[4];
+    for (int i = 0; i < 4; ++i) {
+        vectorP[i] = new float[4]{};
+    }
+
+    UniversalElementSides b;
+
+    if (A.element[el].Q[0]) {
+        b.N(PC1, PC2, 0);
+        for (int i = 0; i < 4; i++) {
+          //  cout << vectorP[i][0] << " " << PC1[i] << " " << PC2[i] << endl;
+            vectorP[i][0] += (PC1[i] + PC2[i]);
+        }
+    }
+    if (A.element[el].Q[1]) {
+        b.N(PC1, PC2, 1);
+
+        for (int i = 0; i < 4; i++) {
+          //  cout << vectorP[i][0] << " " << PC1[i] << " " << PC2[i] << endl;
+            vectorP[i][0] += (PC1[i] + PC2[i]);
+        }
+    }
+    if (A.element[el].Q[2]) {
+        b.N(PC1, PC2, 2);
+
+        for (int i = 0; i < 4; i++) {
+           // cout << vectorP[i][0] << " " << PC1[i] << " " << PC2[i] << endl;
+            vectorP[i][0] += (PC1[i] + PC2[i]);
+        }
+    }
+    if (A.element[el].Q[3]) {
+        b.N(PC1, PC2, 3);
+
+        for (int i = 0; i < 4; i++) {
+           // cout << vectorP[i][0] << " " << PC1[i] << " " << PC2[i] << endl;
+            vectorP[i][0] += (PC1[i] + PC2[i]);
+        }
+    }
+
+  //  Utility::printP(vectorP);
+    //cout << alfa << " " << tA << " " << 0.5 * sideLenght << "= " << alfa * tA * 0.5 * sideLenght << endl;
+    for (int i = 0; i < 4; i++) {
+
+        vectorP[i][0] *= (alfa * tA * 0.5 * sideLenght);
+
+    }
+
+    //cout << vectorP[0][0] << " " << vectorP[1][0] << " " << vectorP[2][0] << " " << vectorP[3][0] << endl;
+
+
+    return vectorP;
+}
+
+float **Calculations::solveEqationForT(float **H, float **P, int nH, int nL, float **t1) {
+
+    const double eps = 1e-12;
+
+    float **HP = new float *[nL * nH];
+    for (int k = 0; k < nL * nH; ++k) {
+        HP[k] = new float[(nL * nH) + 1]();
+    }
+
+    for (int i = 0; i < nH * nL; ++i) {
+        for (int j = 0; j < nH * nL; ++j) {
+            HP[i][j] = H[i][j];
+        }
+        HP[i][nH * nL] = P[i][0];
+    }
+
+    float m, s;
+    // eliminacja współczynników
+    for (int i = 0; i < nL * nH; i++) {
+        for (int j = i + 1; j < nL * nH; j++) {
+            if (fabs(H[i][i]) < eps) throw "divide by zero";
+            m = -HP[j][i] / HP[i][i];
+            for (int k = i + 1; k <= nL * nH; k++)
+                HP[j][k] += m * HP[i][k];
+        }
+    }
+
+    // wyliczanie niewiadomych
+
+    for (int i = (nL * nH) - 1; i >= 0; i--) {
+        s = HP[i][nL * nH];
+        for (int j = nL * nH - 1; j >= i + 1; j--)
+            s -= HP[i][j] * t1[j][0];
+        if (fabs(HP[i][i]) < eps) throw "divide by zero";
+        t1[i][0] = s / HP[i][i];
+    }
+
+    return t1;
+}
+
+void Calculations::getMinMaxtemp(float **t1Vector, int nH, int nL) {
+
+    float min = t1Vector[0][0], max = t1Vector[0][0];
+
+    for (int i = 1; i < nH * nL; i++) {
+        if (t1Vector[i][0] < min) min = t1Vector[i][0];
+        else if (t1Vector[i][0] > max) max = t1Vector[i][0];
+    }
+
+    Utility::printMinMaxTemp(min, max);
 
 }

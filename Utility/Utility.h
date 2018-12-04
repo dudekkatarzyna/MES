@@ -18,9 +18,9 @@ public:
 
     static void printGrid(GRID &pGRID, int, int);
 
-    static void readFile(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro);
+    static void readFile(int*t0, int*tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa, int *c, int *ro);
 
-    static void printData(float *H, float *L, int *nH, int *nL, int *K, int *t, int *alfa, int *c, int *ro);
+    static void printData(int*t0, int*tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa, int *c, int *ro);
 
     static void printUniversalElement(UniversalElement ue);
 
@@ -60,6 +60,14 @@ public:
     static void printGlobalC(float **globalC,  int nH, int nL);
 
     static void printSumBC(float **Arr);
+
+    static void printP(float **vectorP);
+
+    static void printGlobalP(float **globalP, int nH, int nL);
+
+    static void printTemperature(float **t1Vector, int nH, int nL);
+
+    static void printMinMaxTemp(float min, float max);
 };
 
 

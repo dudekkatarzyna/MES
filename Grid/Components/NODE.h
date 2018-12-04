@@ -10,7 +10,7 @@ class NODE {
 public:
     float x;
     float y;
-    int t;
+    float t;
 
 };
 

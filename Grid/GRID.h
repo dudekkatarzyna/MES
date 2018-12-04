@@ -14,7 +14,7 @@ public:
     NODE *node;
     ELEMENT *element;
 
-    GRID(float H, float L, int nH, int nL, int K, int t);
+    GRID(float H, float L, int nH, int nL, int K, int t0);
 
     static void setBC(GRID A);
 

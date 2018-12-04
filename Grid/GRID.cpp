@@ -10,7 +10,7 @@
 
 using namespace std;
 
-GRID::GRID(float H, float L, int nH, int nL, int K, int t) {
+GRID::GRID(float H, float L, int nH, int nL, int K, int t0) {
 
     node = new NODE[nH * nL];
     element = new ELEMENT[(nH - 1) * (nL - 1)];
@@ -22,7 +22,7 @@ GRID::GRID(float H, float L, int nH, int nL, int K, int t) {
         for (int h = 0; h < nH; h++) {
             this->node[i].x = l * deltaX;
             this->node[i].y = h * deltaY;
-            this->node[i].t = t;
+            this->node[i].t = t0;
             i++;
         }
     }
@@ -57,7 +57,7 @@ void GRID::setBC(GRID A) {
 
 
     A.element[3].Q[0]=true;
-    A.element[5].Q[3]=true;
+    A.element[5].Q[2]=true;
     A.element[6].Q[0]=true;
     A.element[6].Q[1]=true;
     A.element[7].Q[1]=true;

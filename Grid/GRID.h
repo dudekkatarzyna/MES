@@ -7,7 +7,6 @@
 
 #include "Components/NODE.h"
 #include "Components/ELEMENT.h"
-class KsiEta;
 class GRID {
 
 public:

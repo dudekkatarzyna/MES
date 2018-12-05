@@ -30,7 +30,6 @@ UniversalElementSides::UniversalElementSides() {
 
 void UniversalElementSides::N(float PC1[4], float PC2[4], int s) {
 
-
     PC1[0] = static_cast<float>(0.25 * (1 - side[s][0].ksi) * (1 - side[s][0].eta));
     PC1[1] = static_cast<float>(0.25 * (1 + side[s][0].ksi) * (1 - side[s][0].eta));
     PC1[2] = static_cast<float>(0.25 * (1 + side[s][0].ksi) * (1 + side[s][0].eta));
@@ -41,15 +40,5 @@ void UniversalElementSides::N(float PC1[4], float PC2[4], int s) {
     PC2[2] = static_cast<float>(0.25 * (1 + side[s][1].ksi) * (1 + side[s][1].eta));
     PC2[3] = static_cast<float>(0.25 * (1 - side[s][1].ksi) * (1 + side[s][1].eta));
 
-  /*  std::cout<<"pc1: ";
-    for (int i = 0; i < 4; ++i) {
-        std::cout<<" "<<PC1[i]<<" ";
-    }
-    std::cout<<std::endl;
-    std::cout<<"pc2: ";
-    for (int i = 0; i < 4; ++i) {
-        std::cout<<" "<<PC2[i]<<" ";
-    }
-    std::cout<<std::endl;*/
 
 }

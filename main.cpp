@@ -38,8 +38,9 @@ int main() {
 
     for (int t = 0; t < tau; t += stepTau) {
 
-        for (int k = 0; k < nH*nL; ++k) {
-            for (int i = 0; i < nH*nL; ++i) {
+        //clean arrays from next iteration
+        for (int k = 0; k < nH * nL; ++k) {
+            for (int i = 0; i < nH * nL; ++i) {
                 globalH[k][i] = 0;
                 globalC[k][i] = 0;
                 globalP[k][i] = 0;
@@ -47,63 +48,45 @@ int main() {
             }
         }
 
-
         for (int el = 0; el < ((nL - 1) * (nH - 1)); el++) {
 
-        //    cout << endl << endl << "ELEMENT " << el << endl;
             matrixH = Calculations::createH(A, el);
             bordCond = Calculations::addBordCondition(A, el, alfa);
             Calculations::sumArrays(matrixH, bordCond);
-          //  Utility::printFinalH(matrixH);
-
             matrixC = Calculations::matrixC(c, ro);
-          //  Utility::printMatrixC(matrixC);
-
             vectorP = Calculations::vectorP(A, el, alfa, tA);
-         //   Utility::printP(vectorP);
 
+            //agregation to nH*nL x nH*nL array
             for (int i = 0; i < 4; i++) {
-
                 for (int j = 0; j < 4; j++) {
                     globalH[A.element[el].id[i]][A.element[el].id[j]] += matrixH[i][j];
                     globalC[A.element[el].id[i]][A.element[el].id[j]] += matrixC[i][j];
-
                 }
                 globalP[A.element[el].id[i]][0] += vectorP[i][0];
             }
 
         }
-
         // Utility::printGlobalH(globalH, nH, nL);
-        //   Utility::printGlobalC(globalC, nH, nL);
-      //  Utility::printGlobalP(globalP, nH, nL);
+        // Utility::printGlobalC(globalC, nH, nL);
+        // Utility::printGlobalP(globalP, nH, nL);
 
-    /*    cout << "| ------------------------------------------------------------" << endl;
-        cout << "| [C]/dTau" << endl;
-        cout << "| ------------------------------------------------------------" << endl;*/
-
+        // [C]/dTau
         for (int i = 0; i < nL * nH; i++) {
             for (int j = 0; j < nL * nH; j++) {
                 globalC[i][j] /= stepTau;
             }
         }
-    //    Utility::printGlobalC(globalC, nH, nL);
-/*
-        cout << "| ------------------------------------------------------------" << endl;
-        cout << "| [H] + [C]/dTau" << endl;
-        cout << "| ------------------------------------------------------------" << endl;*/
+        // Utility::printGlobalC(globalC, nH, nL);
 
+        //[H] + [C]/dTau
         for (int i = 0; i < nL * nH; i++) {
             for (int j = 0; j < nL * nH; j++) {
                 globalH[i][j] += globalC[i][j];
             }
         }
-   /*     Utility::printGlobalH(globalH, nH, nL);
+        Utility::printGlobalH(globalH, nH, nL);
 
-        cout << "| ------------------------------------------------------------" << endl;
-        cout << "| {P} + [C]/dTau * t0" << endl;
-        cout << "| ------------------------------------------------------------" << endl;*/
-
+        // {P} + [C]/dTau * t0
         for (int i = 0; i < nL * nH; i++) {
             for (int j = 0; j < nL * nH; j++) {
                 globalP[i][0] += (globalC[i][j] * A.node[j].t); //TODO: no zajebiście ale dlaczego j, a nie i
@@ -112,13 +95,11 @@ int main() {
         Utility::printGlobalP(globalP, nH, nL);
 
         //obliczenie równania  t1= [H]^{-1}*{P}
-
         t1Vector = Calculations::solveEqationForT(globalH, globalP, nL, nH, t1Vector);
-
         Utility::printTemperature(t1Vector, nH, nL);
-
         Calculations::getMinMaxtemp(t1Vector, nH, nL);
 
+        //switch temperatures for next iteration
         for (int i = 0; i < nL * nH; i++) {
             A.node[i].t = t1Vector[i][0];
         }

@@ -41,7 +41,7 @@ public:
     static void printSumBC(float **Arr);
     static void printP(float **vectorP);
     static void printGlobalP(float **globalP, int nH, int nL);
-    static void printTemperature(float **t1Vector, int nH, int nL);
+    static void printTemperature(float **t1Vector, int nH, int nL, int t);
     static void printMinMaxTemp(float min, float max);
 };
 

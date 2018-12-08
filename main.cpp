@@ -38,6 +38,8 @@ int main() {
 
     for (int t = 0; t < tau; t += stepTau) {
 
+
+
         //clean arrays from next iteration
         for (int k = 0; k < nH * nL; ++k) {
             for (int i = 0; i < nH * nL; ++i) {
@@ -66,9 +68,6 @@ int main() {
             }
 
         }
-        // Utility::printGlobalH(globalH, nH, nL);
-        // Utility::printGlobalC(globalC, nH, nL);
-        // Utility::printGlobalP(globalP, nH, nL);
 
         // [C]/dTau
         for (int i = 0; i < nL * nH; i++) {
@@ -76,7 +75,6 @@ int main() {
                 globalC[i][j] /= stepTau;
             }
         }
-        // Utility::printGlobalC(globalC, nH, nL);
 
         //[H] + [C]/dTau
         for (int i = 0; i < nL * nH; i++) {
@@ -84,19 +82,17 @@ int main() {
                 globalH[i][j] += globalC[i][j];
             }
         }
-        Utility::printGlobalH(globalH, nH, nL);
 
         // {P} + [C]/dTau * t0
         for (int i = 0; i < nL * nH; i++) {
             for (int j = 0; j < nL * nH; j++) {
-                globalP[i][0] += (globalC[i][j] * A.node[j].t); //TODO: no zajebiście ale dlaczego j, a nie i
+                globalP[i][0] += (globalC[i][j] * A.node[j].t);
             }
         }
-        Utility::printGlobalP(globalP, nH, nL);
 
         //obliczenie równania  t1= [H]^{-1}*{P}
         t1Vector = Calculations::solveEqationForT(globalH, globalP, nL, nH, t1Vector);
-        Utility::printTemperature(t1Vector, nH, nL);
+        Utility::printTemperature(t1Vector, nH, nL, t);
         Calculations::getMinMaxtemp(t1Vector, nH, nL);
 
         //switch temperatures for next iteration

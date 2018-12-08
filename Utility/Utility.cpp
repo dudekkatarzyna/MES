@@ -403,15 +403,16 @@ void Utility::printGlobalP(float **globalP, int nH, int nL) {
     cout << endl;
 }
 
-void Utility::printTemperature(float **t1Vector, int nH, int nL) {
+void Utility::printTemperature(float **t1Vector, int nH, int nL, int t) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| Calculated t1" << endl;
+    cout << "| Calculated t1, for time: " <<t<< endl;
     cout << "| ------------------------------------------------------------" << endl;
 
     for (int i = 0; i < nH * nL; i++) {
         cout << t1Vector[i][0] << " ";
     }
+
     cout << endl;
 
 }

@@ -45,7 +45,7 @@ GRID::GRID(float H, float L, int nH, int nL, int K, int t0) {
         j++;
     }
 
-    Utility::printGrid(*this, nH, nL);
+   // Utility::printGrid(*this, nH, nL);
 }
 
 void GRID::setBC(GRID A) {

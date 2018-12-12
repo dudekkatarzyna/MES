@@ -50,8 +50,8 @@ void Utility::printELEMENT(GRID &grid, int nH, int nL) {
 }
 
 void
-Utility::readFile(int *t0, int *tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa,
-                  int *c, int *ro) {
+Utility::readFile(float *t0, float *tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa,
+                  float *c, float *ro) {
     ifstream read;
     read.open("../data.txt");
     if (read.is_open()) {
@@ -74,8 +74,8 @@ Utility::readFile(int *t0, int *tau, int *stepTau, int *tA, float *H, float *L, 
 }
 
 void
-Utility::printData(int *t0, int *tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa,
-                   int *c, int *ro) {
+Utility::printData(float *t0, float *tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa,
+                   float *c, float *ro) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| PRINT DATA" << endl;
     cout << "| ------------------------------------------------------------" << endl;

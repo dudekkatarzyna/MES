@@ -16,8 +16,8 @@ public:
     static void printNODE(GRID &, int, int);
     static void printELEMENT(GRID &, int, int);
     static void printGrid(GRID &pGRID, int, int);
-    static void readFile(int*t0, int*tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa, int *c, int *ro);
-    static void printData(int*t0, int*tau, int *stepTau, int *tA, float *H, float *L, int *nH, int *nL, int *K, int *alfa, int *c, int *ro);
+    static void readFile(float*t0, float*tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa, float *c, float *ro);
+    static void printData(float*t0, float*tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa, float *c, float *ro);
     static void printUniversalElement(UniversalElement ue);
     static void printCreateJacobian(float Jacobian[4][2][2]);
     static void printRevertJacobian(float Jacobian[4][2][2]);

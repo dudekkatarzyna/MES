@@ -9,14 +9,14 @@
 using namespace std;
 
 int main() {
-    float H, L;
-    int nH, nL, K, alfa, c, ro, t0, tau, stepTau, tA;
+    float H, L, K, alfa, c, ro, t0, tau, stepTau, tA;
+    int nH, nL;
 
     Utility::readFile(&t0, &tau, &stepTau, &tA, &H, &L, &nH, &nL, &K, &alfa, &c, &ro);
-    GRID A(H, L, nH, nL, K, t0);
+    GRID A(H, L, nH, nL, K, t0, alfa, c, ro);
     //Utility::testGrid(A);
 
-    GRID::setBC(A);
+    GRID::setBC(A, nH, nL);
 
     float **globalH, **globalC, **globalP;
     float **matrixH, **matrixC, **vectorP;

@@ -10,9 +10,9 @@ class ELEMENT {
 
     public:
         int id[4];
-        int k;
         bool Q[4];
 
+        float k, ro, alfa, c;
 };
 
 

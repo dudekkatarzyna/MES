@@ -10,7 +10,7 @@
 
 using namespace std;
 
-GRID::GRID(float H, float L, int nH, int nL, int K, int t0) {
+GRID::GRID(float H, float L, int nH, int nL, int K, int t0, float alfa, float c, float ro) {
 
     node = new NODE[nH * nL];
     element = new ELEMENT[(nH - 1) * (nL - 1)];
@@ -39,28 +39,44 @@ GRID::GRID(float H, float L, int nH, int nL, int K, int t0) {
         this->element[i].id[3] = j + 1;
 
         this->element[i].k = K;
+        this->element[i].c = c;
+        this->element[i].ro = ro;
+        this->element[i].alfa = alfa;
         for (bool &q : this->element[i].Q) {
             q = false;
         }
         j++;
     }
 
-   // Utility::printGrid(*this, nH, nL);
+    // Utility::printGrid(*this, nH, nL);
 }
 
-void GRID::setBC(GRID A) {
+void GRID::setBC(GRID A, int nH, int nL) {
 
-    A.element[0].Q[0] = true;
-    A.element[0].Q[3] = true;
-    A.element[1].Q[3] = true;
-    A.element[2].Q[2] = true;
-    A.element[2].Q[3] = true;
-    A.element[3].Q[0] = true;
-    A.element[5].Q[2] = true;
-    A.element[6].Q[0] = true;
-    A.element[6].Q[1] = true;
-    A.element[7].Q[1] = true;
-    A.element[8].Q[1] = true;
-    A.element[8].Q[2] = true;
+    bool top = true, bottom = true, right = true, left = true;
+
+
+    if (bottom) {
+        for (int i = 0; i < (nL - 1) * (nH - 1); i += (nH - 1)) {
+
+            A.element[i].Q[0] = true;
+        }
+    }
+    if (right) {
+        for (int i = (nH - 1) * (nL - 2); i < (nH - 1) * (nL - 1); i++) {
+            A.element[i].Q[1] = true;
+        }
+    }
+    if (top) {
+        for (int i = nH - 2; i < (nL - 1) * (nH - 1); i += (nH - 1)) {
+            A.element[i].Q[2] = true;
+        }
+    }
+    if (left) {
+        for (int i = 0; i < nH - 1; i++) {
+            A.element[i].Q[3] = true;
+        }
+
+    }
 
 }

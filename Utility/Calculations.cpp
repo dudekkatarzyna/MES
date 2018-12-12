@@ -438,3 +438,65 @@ void Calculations::getMinMaxtemp(float **t1Vector, int nH, int nL) {
 
     Utility::printMinMaxTemp(min, max);
 }
+
+float **Calculations::agregateH(GRID A, int nH, int nL, float **matrixH) {
+
+    float **globalH;
+
+    globalH = new float *[nL * nH];
+
+    for (int k = 0; k < nL * nH; ++k) {
+        globalH[k] = new float[nL * nH]();
+    }
+
+    for (int el = 0; el < ((nL - 1) * (nH - 1)); el++) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                globalH[A.element[el].id[i]][A.element[el].id[j]] += matrixH[i][j];
+            }
+        }
+    }
+
+    return globalH;
+}
+
+float **Calculations::agregateP(GRID A, int nH, int nL, float **vectorP) {
+
+    float **globalP;
+
+    globalP = new float *[nL * nH];
+
+    for (int k = 0; k < nL * nH; ++k) {
+        globalP[k] = new float[nL * nH]();
+    }
+
+    for (int el = 0; el < ((nL - 1) * (nH - 1)); el++) {
+        for (int i = 0; i < 4; i++) {
+            globalP[A.element[el].id[i]][0] += vectorP[i][0];
+        }
+    }
+
+    return globalP;
+
+}
+
+float **Calculations::agregateC(GRID A, int nH, int nL, float **matrixC) {
+
+    float **globalC;
+    globalC = new float *[nL * nH];
+
+    for (int k = 0; k < nL * nH; ++k) {
+        globalC[k] = new float[nL * nH]();
+    }
+
+    for (int el = 0; el < ((nL - 1) * (nH - 1)); el++) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                globalC[A.element[el].id[i]][A.element[el].id[j]] += matrixC[i][j];
+            }
+        }
+    }
+
+    return globalC;
+
+}

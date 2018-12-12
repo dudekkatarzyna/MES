@@ -31,6 +31,12 @@ public:
     static void createMatrixCNSqrt();
     static float** solveEqationForT(float **H, float **P, int nH, int nL, float **t1);
     static void getMinMaxtemp(float **t1Vector, int nH, int nL);
+
+    static float **agregateH(GRID A, int nH, int nL, float **matrixH);
+
+    static float **agregateC(GRID A, int nH, int nL, float **matrixC);
+
+    static float **agregateP(GRID A, int nH, int nL, float **vectorP);
 };
 
 

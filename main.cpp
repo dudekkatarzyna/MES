@@ -23,34 +23,29 @@ int main() {
     float **bordCond;
     float **t1Vector;
 
-    globalH = new float *[nL * nH];
-    globalC = new float *[nL * nH];
-    globalP = new float *[nL * nH];
+
     t1Vector = new float *[nL * nH];
 
 
     for (int k = 0; k < nL * nH; ++k) {
-        globalH[k] = new float[nL * nH]();
-        globalC[k] = new float[nL * nH]();
-        globalP[k] = new float[nL * nH]();
         t1Vector[k] = new float[nL * nH]();
     }
 
     for (int t = 0; t < tau; t += stepTau) {
 
-
-
         //clean arrays from next iteration
         for (int k = 0; k < nH * nL; ++k) {
             for (int i = 0; i < nH * nL; ++i) {
-                globalH[k][i] = 0;
-                globalC[k][i] = 0;
-                globalP[k][i] = 0;
+                globalH= nullptr;
+                globalC= nullptr;
+                globalP = nullptr;
                 t1Vector[k][i] = 0;
             }
         }
 
         for (int el = 0; el < ((nL - 1) * (nH - 1)); el++) {
+
+
 
             matrixH = Calculations::createH(A, el);
             bordCond = Calculations::addBordCondition(A, el, alfa);
@@ -58,14 +53,9 @@ int main() {
             matrixC = Calculations::matrixC(c, ro);
             vectorP = Calculations::vectorP(A, el, alfa, tA);
 
-            //agregation to nH*nL x nH*nL array
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    globalH[A.element[el].id[i]][A.element[el].id[j]] += matrixH[i][j];
-                    globalC[A.element[el].id[i]][A.element[el].id[j]] += matrixC[i][j];
-                }
-                globalP[A.element[el].id[i]][0] += vectorP[i][0];
-            }
+            globalH=Calculations::agregateH(A, nH, nL, matrixH);
+            globalC=Calculations::agregateC(A, nH, nL, matrixC);
+            globalP=Calculations::agregateP(A, nH, nL, vectorP);
 
         }
 
@@ -82,6 +72,8 @@ int main() {
                 globalH[i][j] += globalC[i][j];
             }
         }
+
+        Utility::printGlobalH(globalH, nH, nL);
 
         // {P} + [C]/dTau * t0
         for (int i = 0; i < nL * nH; i++) {

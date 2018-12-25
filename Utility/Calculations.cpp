@@ -11,22 +11,22 @@
 #include "../UniversalElements/KsiEta.h"
 
 using namespace std;
-float Jacobian[4][2][2];
-float **H;
-float detJ[4];
-float divNx[4][4];
-float divNy[4][4];
-float divNxSqr[4][4][4];
-float divNySqr[4][4][4];
-float arrK[4][4][4];
-float **PC1Sqr;
-float **PC2Sqr;
-float **sum;
-float sideLenght = 0;
-float PC1[4], PC2[4];
+double Jacobian[4][2][2];
+double **H;
+double detJ[4];
+double divNx[4][4];
+double divNy[4][4];
+double divNxSqr[4][4][4];
+double divNySqr[4][4][4];
+double arrK[4][4][4];
+double **PC1Sqr;
+double **PC2Sqr;
+double **sum;
+double sideLenght = 0;
+double PC1[4], PC2[4];
 UniversalElement ue;
 
-float **Calculations::createH(GRID A, int elId) {
+double **Calculations::createH(GRID A, int elId) {
 
 
     Calculations::createJacobian(A, elId);
@@ -36,7 +36,7 @@ float **Calculations::createH(GRID A, int elId) {
     Calculations::dNdXY();
     multiplyT(divNx, divNy);
     Calculations::removeIntegral(divNxSqr, divNySqr);
-    Calculations::multiplyK(A, divNxSqr, divNySqr);
+    Calculations::multiplyK(A, divNxSqr, divNySqr, elId);
     Calculations::calculateH(arrK);
 
     return H;
@@ -77,13 +77,13 @@ void Calculations::detJacobian() {
         detJ[nodeId] =
                 Jacobian[nodeId][0][0] * Jacobian[nodeId][1][1] - Jacobian[nodeId][0][1] * Jacobian[nodeId][1][0];
     }
-    //Utility::printDetJ(detJ);
+   // Utility::printDetJ(detJ);
 }
 
 void Calculations::revertJavobian() {
 
     for (auto &nodeId : Jacobian) {
-        float tmp = nodeId[0][0];
+        double tmp = nodeId[0][0];
         nodeId[0][0] = nodeId[1][1];
         nodeId[1][1] = tmp;
         nodeId[0][1] *= (-1);
@@ -136,7 +136,7 @@ void Calculations::dNdXY() {
     //Utility::printdNdXY(divNx, divNy);
 }
 
-void Calculations::multiplyT(float divNx[4][4], float divNy[4][4]) {
+void Calculations::multiplyT(double divNx[4][4], double divNy[4][4]) {
 
 
     for (int pc = 0; pc < 4; pc++) {
@@ -152,7 +152,7 @@ void Calculations::multiplyT(float divNx[4][4], float divNy[4][4]) {
 }
 
 
-void Calculations::removeIntegral(float divNxSqr[4][4][4], float divNySqr[4][4][4]) {
+void Calculations::removeIntegral(double divNxSqr[4][4][4], double divNySqr[4][4][4]) {
 
     for (int arr = 0; arr < 4; arr++) {
         for (int i = 0; i < 4; i++) {
@@ -166,28 +166,30 @@ void Calculations::removeIntegral(float divNxSqr[4][4][4], float divNySqr[4][4][
     //Utility::printRemoveIntegral(divNxSqr, divNySqr);
 }
 
-void Calculations::multiplyK(GRID A, float divNxSqr[4][4][4], float divNySqr[4][4][4]) {
+void Calculations::multiplyK(GRID A, double divNxSqr[4][4][4], double divNySqr[4][4][4], int elId) {
 
 
+  //  cout<<elId<<": "<<A.element[elId].k<<" ";
     for (int pkt = 0; pkt < 4; pkt++) {
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
 
-                arrK[pkt][i][j] = A.element[pkt].k * (divNxSqr[pkt][i][j] + divNySqr[pkt][i][j]);
+                arrK[pkt][i][j] = A.element[elId].k * (divNxSqr[pkt][i][j] + divNySqr[pkt][i][j]);
             }
         }
     }
 
-    //Utility::printMultiplyK(arrK);
+  //  Utility::printMultiplyK(arrK);
 }
 
 
-void Calculations::calculateH(float arrK[4][4][4]) {
+void Calculations::calculateH(double arrK[4][4][4]) {
 
-    H = new float *[4];
+    H = new double *[4];
 
     for (int i = 0; i < 4; i++) {
-        H[i] = new float[4];
+        H[i] = new double[4];
         for (int j = 0; j < 4; j++) {
             H[i][j] = 0;
             for (int arr = 0; arr < 4; arr++) {
@@ -199,17 +201,18 @@ void Calculations::calculateH(float arrK[4][4][4]) {
     //Utility::printH(H);
 }
 
-float **Calculations::addBordCondition(GRID A, int el, int alfa) {
+double **Calculations::addBordCondition(GRID A, int el, double alfa) {
 
-    auto **sumArr = new float *[4];
+ //   cout<<el<<": "<<alfa<<"  ";
+    auto **sumArr = new double *[4];
     for (int i = 0; i < 4; ++i) {
-        sumArr[i] = new float[4]{};
+        sumArr[i] = new double[4]{};
     }
     UniversalElementSides a;
 
-    sideLenght = static_cast<float>(sqrt(
+    sideLenght = sqrt(
             pow((A.node[A.element[el].id[2]].x - A.node[A.element[el].id[1]].x), 2) +
-            pow((A.node[A.element[el].id[2]].y - A.node[A.element[el].id[1]].y), 2)));
+            pow((A.node[A.element[el].id[2]].y - A.node[A.element[el].id[1]].y), 2));
 
     if (A.element[el].Q[0]) {
         a.N(PC1, PC2, 0);
@@ -237,13 +240,13 @@ float **Calculations::addBordCondition(GRID A, int el, int alfa) {
     return sumArr;
 }
 
-void Calculations::makeArrayFromVector(float PC1[4], float PC2[4], int alfa) {
+void Calculations::makeArrayFromVector(double PC1[4], double PC2[4], double alfa) {
 
-    PC1Sqr = new float *[4];
-    PC2Sqr = new float *[4];
+    PC1Sqr = new double *[4];
+    PC2Sqr = new double *[4];
     for (int i = 0; i < 4; i++) {
-        PC1Sqr[i] = new float[4];
-        PC2Sqr[i] = new float[4];
+        PC1Sqr[i] = new double[4];
+        PC2Sqr[i] = new double[4];
         for (int j = 0; j < 4; j++) {
             PC1Sqr[i][j] = PC1[i] * PC1[j] * alfa;
             PC2Sqr[i][j] = PC2[i] * PC2[j] * alfa;
@@ -254,14 +257,14 @@ void Calculations::makeArrayFromVector(float PC1[4], float PC2[4], int alfa) {
     //  Utility::printNxN(PC2Sqr);
 }
 
-float **Calculations::sumArraysDet(float **Arr1, float **Arr2) {
+double **Calculations::sumArraysDet(double **Arr1, double **Arr2) {
 
-    sum = new float *[4];
+    sum = new double *[4];
 
     for (int i = 0; i < 4; i++) {
-        sum[i] = new float[4];
+        sum[i] = new double[4];
         for (int j = 0; j < 4; j++) {
-            sum[i][j] = (Arr1[i][j] + Arr2[i][j]) * (sideLenght / 2);
+            sum[i][j] = (Arr1[i][j] + Arr2[i][j]) * (sideLenght * 0.5);
         }
     }
 
@@ -269,30 +272,30 @@ float **Calculations::sumArraysDet(float **Arr1, float **Arr2) {
     return sum;
 }
 
-void Calculations::sumArrays(float **Arr1, float **Arr2) {
+void Calculations::sumArrays(double **Arr1, double **Arr2) {
 
-    sum = new float *[4];
+    sum = new double *[4];
 
     for (int i = 0; i < 4; i++) {
-        sum[i] = new float[4];
+        sum[i] = new double[4];
         for (int j = 0; j < 4; j++) {
             Arr1[i][j] += Arr2[i][j];
         }
     }
 }
 
-float **MatrixCN;
-float ***MatrixCNSqrt;
-float **MatrixC;
+double **MatrixCN;
+double ***MatrixCNSqrt;
+double **MatrixC;
 
-float **Calculations::matrixC(int c, int ro) {
+double **Calculations::matrixC(double c, double ro) {
 
     Calculations::createNKsiEta();
     Calculations::createMatrixCNSqrt();
 
-    MatrixC = new float *[4];
+    MatrixC = new double *[4];
     for (int i = 0; i < 4; i++) {
-        MatrixC[i] = new float[4];
+        MatrixC[i] = new double[4];
         for (int j = 0; j < 4; ++j) {
             MatrixC[i][j] =
                     (MatrixCNSqrt[0][i][j] + MatrixCNSqrt[1][i][j] + MatrixCNSqrt[2][i][j] + MatrixCNSqrt[3][i][j]) *
@@ -307,23 +310,23 @@ void Calculations::createNKsiEta() {
 
 
     KsiEta elArr[4];
-    elArr[0].ksi = static_cast<float>(-1 / sqrt(3));
-    elArr[0].eta = static_cast<float>(-1 / sqrt(3));
-    elArr[1].ksi = static_cast<float>(1 / sqrt(3));
-    elArr[1].eta = static_cast<float>(-1 / sqrt(3));
-    elArr[2].ksi = static_cast<float>(1 / sqrt(3));
-    elArr[2].eta = static_cast<float>(1 / sqrt(3));
-    elArr[3].ksi = static_cast<float>(-1 / sqrt(3));
-    elArr[3].eta = static_cast<float>(1 / sqrt(3));
+    elArr[0].ksi = -1 / sqrt(3);
+    elArr[0].eta = -1 / sqrt(3);
+    elArr[1].ksi = 1 / sqrt(3);
+    elArr[1].eta = -1 / sqrt(3);
+    elArr[2].ksi = 1 / sqrt(3);
+    elArr[2].eta = 1 / sqrt(3);
+    elArr[3].ksi = -1 / sqrt(3);
+    elArr[3].eta = 1 / sqrt(3);
 
 
-    MatrixCN = new float *[4];
+    MatrixCN = new double *[4];
     for (int i = 0; i < 4; i++) {
-        MatrixCN[i] = new float[4];
-        MatrixCN[i][0] = static_cast<float>(0.25 * (1 - elArr[i].ksi) * (1 - elArr[i].eta));
-        MatrixCN[i][1] = static_cast<float>(0.25 * (1 + elArr[i].ksi) * (1 - elArr[i].eta));
-        MatrixCN[i][2] = static_cast<float>(0.25 * (1 + elArr[i].ksi) * (1 + elArr[i].eta));
-        MatrixCN[i][3] = static_cast<float>(0.25 * (1 - elArr[i].ksi) * (1 + elArr[i].eta));
+        MatrixCN[i] = new double[4];
+        MatrixCN[i][0] = 0.25 * (1 - elArr[i].ksi) * (1 - elArr[i].eta);
+        MatrixCN[i][1] = 0.25 * (1 + elArr[i].ksi) * (1 - elArr[i].eta);
+        MatrixCN[i][2] = 0.25 * (1 + elArr[i].ksi) * (1 + elArr[i].eta);
+        MatrixCN[i][3] = 0.25 * (1 - elArr[i].ksi) * (1 + elArr[i].eta);
     }
 
     //Utility::printMatrix4x4(MatrixCN);
@@ -332,12 +335,12 @@ void Calculations::createNKsiEta() {
 
 void Calculations::createMatrixCNSqrt() {
 
-    MatrixCNSqrt = new float **[4];
+    MatrixCNSqrt = new double **[4];
 
     for (int pc = 0; pc < 4; pc++) {
-        MatrixCNSqrt[pc] = new float *[4];
+        MatrixCNSqrt[pc] = new double *[4];
         for (int i = 0; i < 4; i++) {
-            MatrixCNSqrt[pc][i] = new float[4];
+            MatrixCNSqrt[pc][i] = new double[4];
             for (int j = 0; j < 4; j++) {
                 MatrixCNSqrt[pc][i][j] = MatrixCN[pc][i] * MatrixCN[pc][j];
             }
@@ -347,11 +350,13 @@ void Calculations::createMatrixCNSqrt() {
 
 }
 
-float **Calculations::vectorP(GRID A, int el, int alfa, int tA) {
+double **Calculations::vectorP(GRID A, int el, double alfa, double tA) {
 
-    auto **vectorP = new float *[4];
+ //   cout<<el<<": "<<alfa<<"  "<<tA<<endl;
+
+    auto **vectorP = new double *[4];
     for (int i = 0; i < 4; ++i) {
-        vectorP[i] = new float[4]{};
+        vectorP[i] = new double[4]{};
     }
 
     UniversalElementSides b;
@@ -387,13 +392,13 @@ float **Calculations::vectorP(GRID A, int el, int alfa, int tA) {
     return vectorP;
 }
 
-float **Calculations::solveEqationForT(float **H, float **P, int nH, int nL, float **t1) {
+double **Calculations::solveEqationForT(double **H, double **P, int nH, int nL, double **t1) {
 
     const double eps = 1e-12;
 
-    auto **HP = new float *[nL * nH];
+    auto **HP = new double *[nL * nH];
     for (int k = 0; k < nL * nH; ++k) {
-        HP[k] = new float[(nL * nH) + 1]();
+        HP[k] = new double[(nL * nH) + 1]();
     }
 
     for (int i = 0; i < nH * nL; ++i) {
@@ -403,7 +408,7 @@ float **Calculations::solveEqationForT(float **H, float **P, int nH, int nL, flo
         HP[i][nH * nL] = P[i][0];
     }
 
-    float m, s;
+    double m, s;
 
     // eliminacja współczynników
     for (int i = 0; i < nL * nH; i++) {
@@ -427,9 +432,9 @@ float **Calculations::solveEqationForT(float **H, float **P, int nH, int nL, flo
     return t1;
 }
 
-void Calculations::getMinMaxtemp(float **t1Vector, int nH, int nL) {
+void Calculations::getMinMaxtemp(double **t1Vector, int nH, int nL) {
 
-    float min = t1Vector[0][0], max = t1Vector[0][0];
+    double min = t1Vector[0][0], max = t1Vector[0][0];
 
     for (int i = 1; i < nH * nL; i++) {
         if (t1Vector[i][0] < min) min = t1Vector[i][0];

@@ -12,7 +12,7 @@ class ELEMENT {
         int id[4];
         bool Q[4];
 
-        float k, ro, alfa, c;
+        double k, ro, alfa, c;
 };
 
 

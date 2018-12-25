@@ -8,9 +8,9 @@
 
 class NODE {
 public:
-    float x;
-    float y;
-    float t;
+    double x;
+    double y;
+    double t;
 
 };
 

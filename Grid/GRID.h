@@ -13,9 +13,11 @@ public:
     NODE *node;
     ELEMENT *element;
 
-    GRID(float H, float L, int nH, int nL, int K, int t0, float alfa, float c, float ro);
+    GRID(double H, double L, int nH, int nL, double K, double t0, double alfa, double c, double ro);
 
     static void setBC(GRID A, int nH, int nL);
+
+    void addSecondMaterial(int nH, int nL, double cPow, double roPow, double kPow, double alfaPow);
 
 };
 

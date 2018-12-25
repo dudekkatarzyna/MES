@@ -9,54 +9,60 @@
 using namespace std;
 
 int main() {
-    float H, L, K, alfa, c, ro, t0, tau, stepTau, tA;
+    double H, L, k, alfa, c, ro, t0, tau, stepTau, tA;
     int nH, nL;
 
-    Utility::readFile(&t0, &tau, &stepTau, &tA, &H, &L, &nH, &nL, &K, &alfa, &c, &ro);
-    GRID A(H, L, nH, nL, K, t0, alfa, c, ro);
+    double alfaPow, cPow, roPow, kPow;
+    Utility::readProjectFile(&H, &L, &nH, &nL, &tau, &stepTau, &t0, &tA, &alfaPow, &cPow, &roPow, &kPow, &alfa, &c, &ro,
+                             &k);
+
+    //  Utility::readFile(&t0, &tau, &stepTau, &tA, &H, &L, &nH, &nL, &K, &alfa, &c, &ro);
+
+    GRID A(H, L, nH, nL, k, t0, alfa, c, ro);
     //Utility::testGrid(A);
+
+    //A.addSecondMaterial(nH, nL, cPow, roPow, kPow, alfaPow);
+    //  Utility::printGrid(A, nH, nL);
 
     GRID::setBC(A, nH, nL);
 
-    float **globalH, **globalC, **globalP;
-    float **matrixH, **matrixC, **vectorP;
-    float **bordCond;
-    float **t1Vector;
+    double **globalH, **globalC, **globalP;
+    double **matrixH, **matrixC, **vectorP;
+    double **bordCond;
+    double **t1Vector;
 
-    globalH = new float *[nL * nH];
-    globalC = new float *[nL * nH];
-    globalP = new float *[nL * nH];
-    t1Vector = new float *[nL * nH];
+    globalH = new double *[nL * nH];
+    globalC = new double *[nL * nH];
+    globalP = new double *[nL * nH];
+    t1Vector = new double *[nL * nH];
 
 
-    for (int k = 0; k < nL * nH; ++k) {
-        globalH[k] = new float[nL * nH]();
-        globalC[k] = new float[nL * nH]();
-        globalP[k] = new float[nL * nH]();
-        t1Vector[k] = new float[nL * nH]();
+    for (int m = 0; m < nL * nH; ++m) {
+        globalH[m] = new double[nL * nH]();
+        globalC[m] = new double[nL * nH]();
+        globalP[m] = new double[nL * nH]();
+        t1Vector[m] = new double[nL * nH]();
     }
 
-    for (int t = 0; t < tau; t += stepTau) {
+    for (int t = 0; t <= tau; t += stepTau) {
 
-
-
-        //clean arrays from next iteration
-        for (int k = 0; k < nH * nL; ++k) {
+        //clean arrays from prev iteration
+        for (int m = 0; m < nH * nL; ++m) {
             for (int i = 0; i < nH * nL; ++i) {
-                globalH[k][i] = 0;
-                globalC[k][i] = 0;
-                globalP[k][i] = 0;
-                t1Vector[k][i] = 0;
+                globalH[m][i] = 0;
+                globalC[m][i] = 0;
+                globalP[m][i] = 0;
+                t1Vector[m][i] = 0;
             }
         }
 
         for (int el = 0; el < ((nL - 1) * (nH - 1)); el++) {
 
             matrixH = Calculations::createH(A, el);
-            bordCond = Calculations::addBordCondition(A, el, alfa);
+            bordCond = Calculations::addBordCondition(A, el, A.element[el].alfa);
             Calculations::sumArrays(matrixH, bordCond);
-            matrixC = Calculations::matrixC(c, ro);
-            vectorP = Calculations::vectorP(A, el, alfa, tA);
+            matrixC = Calculations::matrixC(A.element[el].c, A.element[el].ro);
+            vectorP = Calculations::vectorP(A, el, A.element[el].alfa, tA);
 
             //agregation to nH*nL x nH*nL array
             for (int i = 0; i < 4; i++) {
@@ -90,7 +96,8 @@ int main() {
             }
         }
 
-        //obliczenie równania  t1= [H]^{-1}*{P}
+     //   Utility::printGlobalH(globalH,nH,nL);
+
         t1Vector = Calculations::solveEqationForT(globalH, globalP, nL, nH, t1Vector);
         Utility::printTemperature(t1Vector, nH, nL, t);
         Calculations::getMinMaxtemp(t1Vector, nH, nL);
@@ -99,5 +106,7 @@ int main() {
         for (int i = 0; i < nL * nH; i++) {
             A.node[i].t = t1Vector[i][0];
         }
+
+      //  Utility::printGridTemperature(A,nH,nL);
     }
 }

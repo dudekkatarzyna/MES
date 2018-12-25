@@ -13,8 +13,8 @@ public:
 private:
 
 public:
-    float divEta[4][4]; // dN/dEta
-    float divKsi[4][4]; // dN/dKsi
+    double divEta[4][4]; // dN/dEta
+    double divKsi[4][4]; // dN/dKsi
 };
 
 

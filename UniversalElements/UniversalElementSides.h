@@ -15,13 +15,13 @@ private:
 
     class KsiEta {
     public:
-        float ksi;
-        float eta;
+        double ksi;
+        double eta;
     };
 
 public:
     KsiEta side[4][2];
-    void N(float PC1[4], float PC2[4], int el);
+    void N(double PC1[4], double PC2[4], int el);
 
 };
 

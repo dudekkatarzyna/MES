@@ -4,6 +4,8 @@
 
 #include "Utility.h"
 #include <iostream>
+#include <iomanip>
+#include <iomanip>
 
 using namespace std;
 
@@ -44,14 +46,18 @@ void Utility::printELEMENT(GRID &grid, int nH, int nL) {
     for (int i = 0; i < (nH - 1) * (nL - 1); i++) {
 
         cout << "| idx: " << i << "  id = " << grid.element[i].id[0] << " " << grid.element[i].id[1] << " "
-             << grid.element[i].id[2] << " " << grid.element[i].id[3] << endl;
+             << grid.element[i].id[2] << " " << grid.element[i].id[3] << " | c = " << grid.element[i].c << setw(7)
+             << " ro ="
+             << setw(7) << grid.element[i].ro << setw(7) << " alfa = " << grid.element[i].alfa << setw(7) << " k = "
+             << grid.element[i].k << endl;
     }
 
 }
 
 void
-Utility::readFile(float *t0, float *tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa,
-                  float *c, float *ro) {
+Utility::readFile(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K,
+                  double *alfa,
+                  double *c, double *ro) {
     ifstream read;
     read.open("../data.txt");
     if (read.is_open()) {
@@ -74,8 +80,9 @@ Utility::readFile(float *t0, float *tau, float *stepTau, float *tA, float *H, fl
 }
 
 void
-Utility::printData(float *t0, float *tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa,
-                   float *c, float *ro) {
+Utility::printData(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K,
+                   double *alfa,
+                   double *c, double *ro) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| PRINT DATA" << endl;
     cout << "| ------------------------------------------------------------" << endl;
@@ -123,7 +130,7 @@ void Utility::printUniversalElement(UniversalElement ue) {
 
 }
 
-void Utility::printCreateJacobian(float (*Jacobian)[2][2]) {
+void Utility::printCreateJacobian(double (*Jacobian)[2][2]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| CREATE JACOBIAN" << endl;
@@ -133,7 +140,7 @@ void Utility::printCreateJacobian(float (*Jacobian)[2][2]) {
 
 }
 
-void Utility::printJacobian(float (*Jacobian)[2][2]) {
+void Utility::printJacobian(double (*Jacobian)[2][2]) {
 
 
     for (int nodeId = 0; nodeId < 4; nodeId++) {
@@ -145,7 +152,7 @@ void Utility::printJacobian(float (*Jacobian)[2][2]) {
     }
 }
 
-void Utility::printRevertJacobian(float (*Jacobian)[2][2]) {
+void Utility::printRevertJacobian(double (*Jacobian)[2][2]) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| REVERT JACOBIAN" << endl;
     cout << "| ------------------------------------------------------------" << endl;
@@ -153,7 +160,7 @@ void Utility::printRevertJacobian(float (*Jacobian)[2][2]) {
     printJacobian(Jacobian);
 }
 
-void Utility::printDetJ(float detJ[4]) {
+void Utility::printDetJ(double detJ[4]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| DET JACOBIAN" << endl;
@@ -165,7 +172,7 @@ void Utility::printDetJ(float detJ[4]) {
 
 }
 
-void Utility::printMultiplyDetJacobian(float (*Jacobian)[2][2]) {
+void Utility::printMultiplyDetJacobian(double (*Jacobian)[2][2]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| MULTIPLY JACOBIAN AND 1/DET" << endl;
@@ -175,7 +182,7 @@ void Utility::printMultiplyDetJacobian(float (*Jacobian)[2][2]) {
 
 }
 
-void Utility::printdNdXY(float (*divNx)[4], float (*divNy)[4]) {
+void Utility::printdNdXY(double (*divNx)[4], double (*divNy)[4]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| CALCULATE dN/dx AND dN/dy" << endl;
@@ -197,7 +204,7 @@ void Utility::printdNdXY(float (*divNx)[4], float (*divNy)[4]) {
 
 }
 
-void Utility::printdivNxySqr(float (*divNxSqr)[4][4], float (*divNySqr)[4][4]) {
+void Utility::printdivNxySqr(double (*divNxSqr)[4][4], double (*divNySqr)[4][4]) {
 
 
     cout << endl << "{dN/dx}{dN/dx}T" << endl;
@@ -235,7 +242,7 @@ void Utility::printdivNxySqr(float (*divNxSqr)[4][4], float (*divNySqr)[4][4]) {
 
 }
 
-void Utility::printMultiplyT(float (*divNxSqr)[4][4], float (*divNySqr)[4][4]) {
+void Utility::printMultiplyT(double (*divNxSqr)[4][4], double (*divNySqr)[4][4]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| MULTIPLY TRANSPOSITION" << endl;
@@ -244,7 +251,7 @@ void Utility::printMultiplyT(float (*divNxSqr)[4][4], float (*divNySqr)[4][4]) {
     Utility::printdivNxySqr(divNxSqr, divNySqr);
 }
 
-void Utility::printRemoveIntegral(float (*divNxSqr)[4][4], float (*divNySqr)[4][4]) {
+void Utility::printRemoveIntegral(double (*divNxSqr)[4][4], double (*divNySqr)[4][4]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| REMOVE INTEGRAL" << endl;
@@ -253,7 +260,7 @@ void Utility::printRemoveIntegral(float (*divNxSqr)[4][4], float (*divNySqr)[4][
     Utility::printdivNxySqr(divNxSqr, divNySqr);
 }
 
-void Utility::printMultiplyK(float (*arrK)[4][4]) {
+void Utility::printMultiplyK(double (*arrK)[4][4]) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| MULTIPLY K" << endl;
@@ -274,7 +281,7 @@ void Utility::printMultiplyK(float (*arrK)[4][4]) {
 
 }
 
-void Utility::printH(float **H) {
+void Utility::printH(double **H) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| CALCULATE H" << endl;
@@ -289,7 +296,7 @@ void Utility::printH(float **H) {
 
 }
 
-void Utility::printNxN(float **Arr) {
+void Utility::printNxN(double **Arr) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| NxN in bordConditon * alfa" << endl;
@@ -299,7 +306,7 @@ void Utility::printNxN(float **Arr) {
 
 }
 
-void Utility::printSumPC(float **sum) {
+void Utility::printSumPC(double **sum) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| (PC1 + PC2) *  detJ" << endl;
@@ -308,7 +315,7 @@ void Utility::printSumPC(float **sum) {
     Utility::printMatrix4x4(sum);
 }
 
-void Utility::printFinalH(float **H) {
+void Utility::printFinalH(double **H) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Version of H, with board condition" << endl;
@@ -317,7 +324,7 @@ void Utility::printFinalH(float **H) {
     Utility::printMatrix4x4(H);
 }
 
-void Utility::printMatrix4x4(float **Arr) {
+void Utility::printMatrix4x4(double **Arr) {
 
     cout << Arr[0][0] << " " << Arr[0][1] << " " << Arr[0][2] << " " << Arr[0][3] << endl;
     cout << Arr[1][0] << " " << Arr[1][1] << " " << Arr[1][2] << " " << Arr[1][3] << endl;
@@ -325,7 +332,7 @@ void Utility::printMatrix4x4(float **Arr) {
     cout << Arr[3][0] << " " << Arr[3][1] << " " << Arr[3][2] << " " << Arr[3][3] << endl;
 }
 
-void Utility::printNxNinC(float **MatrixCNSqrt) {
+void Utility::printNxNinC(double **MatrixCNSqrt) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| NxN matrix in C" << endl;
@@ -335,7 +342,7 @@ void Utility::printNxNinC(float **MatrixCNSqrt) {
 
 }
 
-void Utility::printMatrixC(float **MatrixC) {
+void Utility::printMatrixC(double **MatrixC) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Matrix C" << endl;
     cout << "| ------------------------------------------------------------" << endl;
@@ -343,7 +350,7 @@ void Utility::printMatrixC(float **MatrixC) {
     Utility::printMatrix4x4(MatrixC);
 }
 
-void Utility::printGlobalH(float **globalH, int nH, int nL) {
+void Utility::printGlobalH(double **globalH, int nH, int nL) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Glabal matrix H" << endl;
@@ -358,7 +365,7 @@ void Utility::printGlobalH(float **globalH, int nH, int nL) {
 
 }
 
-void Utility::printGlobalC(float **globalC, int nH, int nL) {
+void Utility::printGlobalC(double **globalC, int nH, int nL) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Glabal matrix C" << endl;
@@ -372,7 +379,7 @@ void Utility::printGlobalC(float **globalC, int nH, int nL) {
     }
 }
 
-void Utility::printSumBC(float **Arr) {
+void Utility::printSumBC(double **Arr) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Summed up all board conditions" << endl;
@@ -382,7 +389,7 @@ void Utility::printSumBC(float **Arr) {
 
 }
 
-void Utility::printP(float **vectorP) {
+void Utility::printP(double **vectorP) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Vector P" << endl;
@@ -392,7 +399,7 @@ void Utility::printP(float **vectorP) {
 
 }
 
-void Utility::printGlobalP(float **globalP, int nH, int nL) {
+void Utility::printGlobalP(double **globalP, int nH, int nL) {
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Glabal vector P" << endl;
     cout << "| ------------------------------------------------------------" << endl;
@@ -403,24 +410,103 @@ void Utility::printGlobalP(float **globalP, int nH, int nL) {
     cout << endl;
 }
 
-void Utility::printTemperature(float **t1Vector, int nH, int nL, int t) {
+void Utility::printTemperature(double **t1Vector, int nH, int nL, int t) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| Calculated t1, for time: " <<t<< endl;
+    cout << "| Calculated t1, for time: " << t << endl;
     cout << "| ------------------------------------------------------------" << endl;
 
     for (int i = 0; i < nH * nL; i++) {
         cout << t1Vector[i][0] << " ";
+
+        if (i != 0 && (i + 1) % nH == 0) cout << endl;
     }
 
     cout << endl;
 
 }
 
-void Utility::printMinMaxTemp(float min, float max) {
+void Utility::printMinMaxTemp(double min, double max) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Min temp: " << min << " Max temp: " << max << endl;
     cout << "| ------------------------------------------------------------" << endl;
+
+}
+
+void Utility::readProjectFile(double *H, double *L, int *nH, int *nL, double *tau, double *stepTau, double *t0, double *tA,
+                              double *alfaPow,
+                              double *cPow, double *roPow, double *kPow, double *alfa, double *c, double *ro, double *k) {
+
+    ifstream read;
+    read.open("../projectData.txt");
+    if (read.is_open()) {
+        read >> *t0;
+        read >> *tau;
+        read >> *stepTau;
+        read >> *tA;
+        read >> *alfa;
+        read >> *H;
+        read >> *L;
+        read >> *nH;
+        read >> *nL;
+        read >> *c;
+        read >> *k;
+        read >> *ro;
+
+        read >> *cPow;
+        read >> *kPow;
+        read >> *roPow;
+        read >> *alfaPow;
+    }
+    read.close();
+
+    Utility::printDataExtended(t0, tau, stepTau, tA, H, L, nH, nL, k, alfa, c, ro, cPow, kPow, roPow, alfaPow);
+
+}
+
+void Utility::printDataExtended(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL,
+                                double *k, double *alfa, double *c, double *ro, double *cPow, double *kPow, double *roPow,
+                                double *alfaPow) {
+
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| PRINT DATA" << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| t0 = " << *t0 << " //initial temperature" << endl;
+    cout << "| tau = " << *tau << " // simulation time" << endl;
+    cout << "| stepTau = " << *stepTau << " //simulation step time" << endl;
+    cout << "| tA = " << *tA << " //ambient temperature" << endl;
+    cout << "| alfa = " << *alfa << " //alfa" << endl;
+    cout << "| H = " << *H << endl;
+    cout << "| L = " << *L << endl;
+    cout << "| nH = " << *nH << endl;
+    cout << "| nL = " << *nL << endl;
+    cout << "| c = " << *c << endl;
+    cout << "| K = " << *k << endl;
+    cout << "| ro = " << *ro << endl;
+
+    cout << "| cPow = " << *cPow << endl;
+    cout << "| kPow = " << *kPow << endl;
+    cout << "| roPow = " << *roPow << endl;
+    cout << "| alfaPow = " << *alfaPow << endl;
+
+}
+
+void Utility::printGridTemperature(GRID A, int nH, int nL) {
+
+    cout<<endl;
+    cout << "| ------------------------------------------------------------" << endl;
+    cout << "| Grid temperature: " << endl;
+    cout << "| ------------------------------------------------------------" << endl;
+
+    for (int i = 0; i < (nH - 1) * (nL - 1); i++) {
+        cout<<i<<". ";
+        for (int j : A.element[i].id) {
+            cout << A.node[j].t << " ";
+        }
+        cout<<endl;
+    }
+
+    cout << endl;
 
 }

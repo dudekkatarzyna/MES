@@ -16,33 +16,43 @@ public:
     static void printNODE(GRID &, int, int);
     static void printELEMENT(GRID &, int, int);
     static void printGrid(GRID &pGRID, int, int);
-    static void readFile(float*t0, float*tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa, float *c, float *ro);
-    static void printData(float*t0, float*tau, float *stepTau, float *tA, float *H, float *L, int *nH, int *nL, float *K, float *alfa, float *c, float *ro);
+    static void readFile(double*t0, double*tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K, double *alfa, double *c, double *ro);
+    static void printData(double*t0, double*tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K, double *alfa, double *c, double *ro);
     static void printUniversalElement(UniversalElement ue);
-    static void printCreateJacobian(float Jacobian[4][2][2]);
-    static void printRevertJacobian(float Jacobian[4][2][2]);
-    static void printJacobian(float Jacobian[4][2][2]);
-    static void printDetJ(float detJ[4]);
-    static void printMultiplyDetJacobian(float Jacobian[4][2][2]);
-    static void printdNdXY(float divNx[4][4], float divNy[4][4]);
-    static void printdivNxySqr(float divNxSqr[4][4][4], float divNySqr[4][4][4]);
-    static void printMultiplyT(float divNxSqr[4][4][4], float divNySqr[4][4][4]);
-    static void printRemoveIntegral(float divNxSqr[4][4][4], float divNySqr[4][4][4]);
-    static void printMultiplyK(float arrK[4][4][4]);
-    static void printH(float **H);
-    static void printNxN(float **Arr);
-    static void printSumPC(float **sum);
-    static void printFinalH(float **H);
-    static void printMatrix4x4(float **Arr);
-    static void printNxNinC(float **MatrixCNSqrt);
-    static void printMatrixC(float **MatrixC);
-    static void printGlobalH(float **globalH, int nH, int nL);
-    static void printGlobalC(float **globalC,  int nH, int nL);
-    static void printSumBC(float **Arr);
-    static void printP(float **vectorP);
-    static void printGlobalP(float **globalP, int nH, int nL);
-    static void printTemperature(float **t1Vector, int nH, int nL, int t);
-    static void printMinMaxTemp(float min, float max);
+    static void printCreateJacobian(double Jacobian[4][2][2]);
+    static void printRevertJacobian(double Jacobian[4][2][2]);
+    static void printJacobian(double Jacobian[4][2][2]);
+    static void printDetJ(double detJ[4]);
+    static void printMultiplyDetJacobian(double Jacobian[4][2][2]);
+    static void printdNdXY(double divNx[4][4], double divNy[4][4]);
+    static void printdivNxySqr(double divNxSqr[4][4][4], double divNySqr[4][4][4]);
+    static void printMultiplyT(double divNxSqr[4][4][4], double divNySqr[4][4][4]);
+    static void printRemoveIntegral(double divNxSqr[4][4][4], double divNySqr[4][4][4]);
+    static void printMultiplyK(double arrK[4][4][4]);
+    static void printH(double **H);
+    static void printNxN(double **Arr);
+    static void printSumPC(double **sum);
+    static void printFinalH(double **H);
+    static void printMatrix4x4(double **Arr);
+    static void printNxNinC(double **MatrixCNSqrt);
+    static void printMatrixC(double **MatrixC);
+    static void printGlobalH(double **globalH, int nH, int nL);
+    static void printGlobalC(double **globalC,  int nH, int nL);
+    static void printSumBC(double **Arr);
+    static void printP(double **vectorP);
+    static void printGlobalP(double **globalP, int nH, int nL);
+    static void printTemperature(double **t1Vector, int nH, int nL, int t);
+    static void printMinMaxTemp(double min, double max);
+
+    static void
+    readProjectFile(double *H, double *L, int *nH, int *nL, double *tau, double *stepTau, double *t0, double *tA, double *alfaPow, double *cPow,
+                    double *roPow, double *kPow, double *alfa, double *c, double *ro, double *k);
+
+    static void
+    printDataExtended(double *t0, double *tau, double *stepTau, double *a, double *h, double *l, int *nH, int *nL, double *k,
+                      double *alfa, double *c, double *ro, double *pow, double *kPow, double *roPow, double *alfaPow);
+
+    static void printGridTemperature(GRID A, int nH, int nL);
 };
 
 

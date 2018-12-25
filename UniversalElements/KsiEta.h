@@ -8,8 +8,8 @@
 
 class KsiEta {
 public:
-    float ksi;
-    float eta;
+    double ksi;
+    double eta;
 };
 
 

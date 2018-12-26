@@ -24,7 +24,7 @@ double **PC2Sqr;
 double **sum;
 double sideLenght = 0;
 double PC1[4], PC2[4];
-UniversalElement ue;
+UniversalElement universalElement;
 
 double **Calculations::createH(GRID A, int elId) {
 
@@ -47,25 +47,25 @@ void Calculations::createJacobian(GRID A, int elId) {
 
     for (int nodeId = 0; nodeId < 4; nodeId++) {
         Jacobian[nodeId][0][0] =
-                ue.divKsi[nodeId][0] * A.node[A.element[elId].id[0]].x +
-                ue.divKsi[nodeId][1] * A.node[A.element[elId].id[1]].x +
-                ue.divKsi[nodeId][2] * A.node[A.element[elId].id[2]].x +
-                ue.divKsi[nodeId][3] * A.node[A.element[elId].id[3]].x;
+                universalElement.divKsi[nodeId][0] * A.node[A.element[elId].id[0]].x +
+                universalElement.divKsi[nodeId][1] * A.node[A.element[elId].id[1]].x +
+                universalElement.divKsi[nodeId][2] * A.node[A.element[elId].id[2]].x +
+                universalElement.divKsi[nodeId][3] * A.node[A.element[elId].id[3]].x;
         Jacobian[nodeId][0][1] =
-                ue.divKsi[nodeId][0] * A.node[A.element[elId].id[0]].y +
-                ue.divKsi[nodeId][1] * A.node[A.element[elId].id[1]].y +
-                ue.divKsi[nodeId][2] * A.node[A.element[elId].id[2]].y +
-                ue.divKsi[nodeId][3] * A.node[A.element[elId].id[3]].y;
+                universalElement.divKsi[nodeId][0] * A.node[A.element[elId].id[0]].y +
+                universalElement.divKsi[nodeId][1] * A.node[A.element[elId].id[1]].y +
+                universalElement.divKsi[nodeId][2] * A.node[A.element[elId].id[2]].y +
+                universalElement.divKsi[nodeId][3] * A.node[A.element[elId].id[3]].y;
         Jacobian[nodeId][1][0] =
-                ue.divEta[nodeId][0] * A.node[A.element[elId].id[0]].x +
-                ue.divEta[nodeId][1] * A.node[A.element[elId].id[1]].x +
-                ue.divEta[nodeId][2] * A.node[A.element[elId].id[2]].x +
-                ue.divEta[nodeId][3] * A.node[A.element[elId].id[3]].x;
+                universalElement.divEta[nodeId][0] * A.node[A.element[elId].id[0]].x +
+                universalElement.divEta[nodeId][1] * A.node[A.element[elId].id[1]].x +
+                universalElement.divEta[nodeId][2] * A.node[A.element[elId].id[2]].x +
+                universalElement.divEta[nodeId][3] * A.node[A.element[elId].id[3]].x;
         Jacobian[nodeId][1][1] =
-                ue.divEta[nodeId][0] * A.node[A.element[elId].id[0]].y +
-                ue.divEta[nodeId][1] * A.node[A.element[elId].id[1]].y +
-                ue.divEta[nodeId][2] * A.node[A.element[elId].id[2]].y +
-                ue.divEta[nodeId][3] * A.node[A.element[elId].id[3]].y;
+                universalElement.divEta[nodeId][0] * A.node[A.element[elId].id[0]].y +
+                universalElement.divEta[nodeId][1] * A.node[A.element[elId].id[1]].y +
+                universalElement.divEta[nodeId][2] * A.node[A.element[elId].id[2]].y +
+                universalElement.divEta[nodeId][3] * A.node[A.element[elId].id[3]].y;
     }
 
     //Utility::printCreateJacobian(Jacobian);
@@ -114,22 +114,22 @@ void Calculations::dNdXY() {
     for (int nodeId = 0; nodeId < 4; nodeId++) {
 
         divNx[nodeId][0] =
-                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][0] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][0];
+                Jacobian[nodeId][0][0] * universalElement.divKsi[nodeId][0] + Jacobian[nodeId][0][1] * universalElement.divEta[nodeId][0];
         divNx[nodeId][1] =
-                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][1] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][1];
+                Jacobian[nodeId][0][0] * universalElement.divKsi[nodeId][1] + Jacobian[nodeId][0][1] * universalElement.divEta[nodeId][1];
         divNx[nodeId][2] =
-                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][2] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][2];
+                Jacobian[nodeId][0][0] * universalElement.divKsi[nodeId][2] + Jacobian[nodeId][0][1] * universalElement.divEta[nodeId][2];
         divNx[nodeId][3] =
-                Jacobian[nodeId][0][0] * ue.divKsi[nodeId][3] + Jacobian[nodeId][0][1] * ue.divEta[nodeId][3];
+                Jacobian[nodeId][0][0] * universalElement.divKsi[nodeId][3] + Jacobian[nodeId][0][1] * universalElement.divEta[nodeId][3];
 
         divNy[nodeId][0] =
-                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][0] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][0];
+                Jacobian[nodeId][1][0] * universalElement.divKsi[nodeId][0] + Jacobian[nodeId][1][1] * universalElement.divEta[nodeId][0];
         divNy[nodeId][1] =
-                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][1] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][1];
+                Jacobian[nodeId][1][0] * universalElement.divKsi[nodeId][1] + Jacobian[nodeId][1][1] * universalElement.divEta[nodeId][1];
         divNy[nodeId][2] =
-                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][2] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][2];
+                Jacobian[nodeId][1][0] * universalElement.divKsi[nodeId][2] + Jacobian[nodeId][1][1] * universalElement.divEta[nodeId][2];
         divNy[nodeId][3] =
-                Jacobian[nodeId][1][0] * ue.divKsi[nodeId][3] + Jacobian[nodeId][1][1] * ue.divEta[nodeId][3];
+                Jacobian[nodeId][1][0] * universalElement.divKsi[nodeId][3] + Jacobian[nodeId][1][1] * universalElement.divEta[nodeId][3];
 
     }
 
@@ -432,7 +432,7 @@ double **Calculations::solveEqationForT(double **H, double **P, int nH, int nL, 
     return t1;
 }
 
-void Calculations::getMinMaxtemp(double **t1Vector, int nH, int nL) {
+void Calculations::getMinMaxtemp(double **t1Vector, int nH, int nL, int t) {
 
     double min = t1Vector[0][0], max = t1Vector[0][0];
 
@@ -441,5 +441,5 @@ void Calculations::getMinMaxtemp(double **t1Vector, int nH, int nL) {
         else if (t1Vector[i][0] > max) max = t1Vector[i][0];
     }
 
-    Utility::printMinMaxTemp(min, max);
+    Utility::printMinMaxTemp(min, max, t);
 }

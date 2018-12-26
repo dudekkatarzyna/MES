@@ -18,7 +18,7 @@ public:
     static void printGrid(GRID &pGRID, int, int);
     static void readFile(double*t0, double*tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K, double *alfa, double *c, double *ro);
     static void printData(double*t0, double*tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K, double *alfa, double *c, double *ro);
-    static void printUniversalElement(UniversalElement ue);
+    static void printUniversalElement(UniversalElement universalElement);
     static void printCreateJacobian(double Jacobian[4][2][2]);
     static void printRevertJacobian(double Jacobian[4][2][2]);
     static void printJacobian(double Jacobian[4][2][2]);
@@ -42,7 +42,7 @@ public:
     static void printP(double **vectorP);
     static void printGlobalP(double **globalP, int nH, int nL);
     static void printTemperature(double **t1Vector, int nH, int nL, int t);
-    static void printMinMaxTemp(double min, double max);
+    static void printMinMaxTemp(double min, double max, int t);
 
     static void
     readProjectFile(double *H, double *L, int *nH, int *nL, double *tau, double *stepTau, double *t0, double *tA, double *alfaPow, double *cPow,

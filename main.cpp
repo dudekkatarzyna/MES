@@ -21,7 +21,8 @@ int main() {
     GRID A(H, L, nH, nL, k, t0, alfa, c, ro);
     //Utility::testGrid(A);
 
-    //A.addSecondMaterial(nH, nL, cPow, roPow, kPow, alfaPow);
+    A.addSecondMaterial(nH, nL, cPow, roPow, kPow, alfaPow);
+
     //  Utility::printGrid(A, nH, nL);
 
     GRID::setBC(A, nH, nL);
@@ -96,17 +97,18 @@ int main() {
             }
         }
 
-     //   Utility::printGlobalH(globalH,nH,nL);
+        //   Utility::printGlobalH(globalH,nH,nL);
 
         t1Vector = Calculations::solveEqationForT(globalH, globalP, nL, nH, t1Vector);
-        Utility::printTemperature(t1Vector, nH, nL, t);
-        Calculations::getMinMaxtemp(t1Vector, nH, nL);
+        // Utility::printTemperature(t1Vector, nH, nL, t);
+        Calculations::getMinMaxtemp(t1Vector, nH, nL, t);
 
         //switch temperatures for next iteration
         for (int i = 0; i < nL * nH; i++) {
             A.node[i].t = t1Vector[i][0];
         }
 
-      //  Utility::printGridTemperature(A,nH,nL);
+        //Utility::printGridTemperature(A, nH, nL);
     }
+
 }

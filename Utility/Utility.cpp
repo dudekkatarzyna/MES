@@ -55,7 +55,8 @@ void Utility::printELEMENT(GRID &grid, int nH, int nL) {
 }
 
 void
-Utility::readFile(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K,
+Utility::readFile(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL,
+                  double *K,
                   double *alfa,
                   double *c, double *ro) {
     ifstream read;
@@ -80,7 +81,8 @@ Utility::readFile(double *t0, double *tau, double *stepTau, double *tA, double *
 }
 
 void
-Utility::printData(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL, double *K,
+Utility::printData(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL,
+                   double *K,
                    double *alfa,
                    double *c, double *ro) {
     cout << "| ------------------------------------------------------------" << endl;
@@ -102,7 +104,7 @@ Utility::printData(double *t0, double *tau, double *stepTau, double *tA, double 
 
 }
 
-void Utility::printUniversalElement(UniversalElement ue) {
+void Utility::printUniversalElement(UniversalElement universalElement) {
 
 
     cout << "| ------------------------------------------------------------" << endl;
@@ -113,7 +115,7 @@ void Utility::printUniversalElement(UniversalElement ue) {
     for (int i = 0; i < 4; i++) {
         cout << "divKsi punkt nr " << i << endl;
         for (int j = 0; j < 4; j++) {
-            cout << ue.divKsi[i][j] << " ";
+            cout << universalElement.divKsi[i][j] << " ";
         }
         cout << endl;
     }
@@ -122,7 +124,7 @@ void Utility::printUniversalElement(UniversalElement ue) {
     for (int i = 0; i < 4; i++) {
         cout << "divEta punkt nr " << i << endl;
         for (int j = 0; j < 4; j++) {
-            cout << ue.divEta[i][j] << " ";
+            cout << universalElement.divEta[i][j] << " ";
         }
         cout << endl;
     }
@@ -426,17 +428,18 @@ void Utility::printTemperature(double **t1Vector, int nH, int nL, int t) {
 
 }
 
-void Utility::printMinMaxTemp(double min, double max) {
+void Utility::printMinMaxTemp(double min, double max, int t) {
 
     cout << "| ------------------------------------------------------------" << endl;
-    cout << "| Min temp: " << min << " Max temp: " << max << endl;
+    cout << "| Min temp: " << min << " Max temp: " << max <<"    Time: "<<t<< endl;
     cout << "| ------------------------------------------------------------" << endl;
 
 }
 
-void Utility::readProjectFile(double *H, double *L, int *nH, int *nL, double *tau, double *stepTau, double *t0, double *tA,
-                              double *alfaPow,
-                              double *cPow, double *roPow, double *kPow, double *alfa, double *c, double *ro, double *k) {
+void
+Utility::readProjectFile(double *H, double *L, int *nH, int *nL, double *tau, double *stepTau, double *t0, double *tA,
+                         double *alfaPow,
+                         double *cPow, double *roPow, double *kPow, double *alfa, double *c, double *ro, double *k) {
 
     ifstream read;
     read.open("../projectData.txt");
@@ -465,9 +468,10 @@ void Utility::readProjectFile(double *H, double *L, int *nH, int *nL, double *ta
 
 }
 
-void Utility::printDataExtended(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL,
-                                double *k, double *alfa, double *c, double *ro, double *cPow, double *kPow, double *roPow,
-                                double *alfaPow) {
+void
+Utility::printDataExtended(double *t0, double *tau, double *stepTau, double *tA, double *H, double *L, int *nH, int *nL,
+                           double *k, double *alfa, double *c, double *ro, double *cPow, double *kPow, double *roPow,
+                           double *alfaPow) {
 
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| PRINT DATA" << endl;
@@ -494,17 +498,18 @@ void Utility::printDataExtended(double *t0, double *tau, double *stepTau, double
 
 void Utility::printGridTemperature(GRID A, int nH, int nL) {
 
-    cout<<endl;
+    cout << endl;
     cout << "| ------------------------------------------------------------" << endl;
     cout << "| Grid temperature: " << endl;
     cout << "| ------------------------------------------------------------" << endl;
 
-    for (int i = 0; i < (nH - 1) * (nL - 1); i++) {
-        cout<<i<<". ";
-        for (int j : A.element[i].id) {
-            cout << A.node[j].t << " ";
-        }
-        cout<<endl;
+    for (int i = 0; i < (nH  * nL); i++) {
+
+        if (i != 0 && i % nH == 0) cout << endl;
+      //  cout  <<i<< " ";
+        cout << A.node[i].t << " ";
+
+
     }
 
     cout << endl;

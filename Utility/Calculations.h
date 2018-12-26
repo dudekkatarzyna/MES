@@ -30,7 +30,7 @@ public:
     static void createNKsiEta();
     static void createMatrixCNSqrt();
     static double** solveEqationForT(double **H, double **P, int nH, int nL, double **t1);
-    static void getMinMaxtemp(double **t1Vector, int nH, int nL);
+    static void getMinMaxtemp(double **t1Vector, int nH, int nL, int i);
 };
 
 
